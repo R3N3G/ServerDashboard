@@ -1,0 +1,11 @@
+{{ template "base" . }}
+
+{{ define "title" }}{{ .Title }}{{ end }}
+
+{{ define "body" }}
+    <div id="liveOutput"></div>
+{{ end }}
+
+{{ define "script" }}
+    <script src="/static/js/websocket.js" type="text/javascript"></script>
+{{ end }}

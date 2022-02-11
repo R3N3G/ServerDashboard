@@ -10,11 +10,17 @@ import (
 )
 
 func (wp *Webpage) defineRoutes() {
+	wp.Router.Get("/", wp.routeHome)
 	wp.Router.Route("/system", func(r chi.Router) {
 		r.Get("/ws/", wp.routeWebSocketSystem)
 		r.Get("/live/", wp.routeLiveStruct)
 		r.Get("/static/", wp.routeStaticStruct)
 	})
+}
+
+func (wp *Webpage) routeHome(w http.ResponseWriter, r *http.Request) {
+	wp.HtmlInformation.Title = "SystemO"
+	wp.parseHtml("./templates/index.html").Execute(w, wp.HtmlInformation)
 }
 
 func (wp *Webpage) routeWebSocketSystem(w http.ResponseWriter, r *http.Request) {
