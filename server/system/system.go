@@ -11,8 +11,12 @@ import (
 	"time"
 )
 
-func translateSystemOs(goos string) string {
-	switch goos {
+func GetSystemOs() string {
+	sysInfo, err := host.Info()
+	if err != nil {
+		return ""
+	}
+	switch sysInfo.OS {
 	case "darwin":
 		return "Apple MacOS"
 	case "linux":
@@ -20,16 +24,8 @@ func translateSystemOs(goos string) string {
 	case "windows":
 		return "Microsoft Windows"
 	default:
-		return "not detected"
+		return ""
 	}
-}
-
-func GetSystemInformation() (string, string) {
-	sysInfo, err := host.Info()
-	if err != nil {
-		return "", ""
-	}
-	return sysInfo.Hostname, translateSystemOs(sysInfo.OS)
 }
 
 func StaticCpu() string {

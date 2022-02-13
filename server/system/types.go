@@ -19,7 +19,6 @@ type Static struct {
 		Disk string `json:"disk"`
 	} `json:"values"`
 	Extras struct {
-		SystemHostname        string `json:"system_hostname"`
 		OperatingSystem       string `json:"operating_system"`
 		ProcessorArchitecture string `json:"processor_architecture"`
 		GoVersion             string `json:"go_version"`

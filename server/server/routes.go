@@ -55,7 +55,6 @@ func (wp *Webpage) routeLiveStruct(w http.ResponseWriter, r *http.Request) {
 }
 
 func (wp *Webpage) routeStaticStruct(w http.ResponseWriter, r *http.Request) {
-	hostname, os := system.GetSystemInformation()
 	var result = system.Static{
 		Values: struct {
 			CPU  string `json:"cpu"`
@@ -67,13 +66,11 @@ func (wp *Webpage) routeStaticStruct(w http.ResponseWriter, r *http.Request) {
 			Disk: system.StaticDisk(),
 		},
 		Extras: struct {
-			SystemHostname        string `json:"system_hostname"`
 			OperatingSystem       string `json:"operating_system"`
 			ProcessorArchitecture string `json:"processor_architecture"`
 			GoVersion             string `json:"go_version"`
 		}{
-			SystemHostname:        hostname,
-			OperatingSystem:       os,
+			OperatingSystem:       system.GetSystemOs(),
 			ProcessorArchitecture: runtime.GOARCH,
 			GoVersion:             runtime.Version(),
 		},
