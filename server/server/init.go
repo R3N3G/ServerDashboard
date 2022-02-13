@@ -20,15 +20,15 @@ func (wp *Webpage) initRouter() {
 	wp.Router = chi.NewRouter()
 }
 
-func (wp Webpage) serve(address string) {
-	http.ListenAndServe(address, wp.Router)
-}
-
-func Run(address string) {
+func SetupServer() *chi.Mux {
 	wp := Webpage{}
 	wp.Upgrader = websocket.Upgrader{}
 	wp.initRouter()
 	wp.initMiddleWare()
 	wp.defineRoutes()
-	wp.serve(address)
+	return wp.Router
+}
+
+func Run(address string, router *chi.Mux) {
+	http.ListenAndServe(address, router)
 }

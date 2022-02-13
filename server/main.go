@@ -5,5 +5,6 @@ import (
 )
 
 func main() {
-	server.Run("localhost:8700")
+	router := server.SetupServer()
+	server.Run("localhost:8700", router)
 }
