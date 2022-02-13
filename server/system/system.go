@@ -6,14 +6,12 @@ import (
 	"github.com/gorilla/websocket"
 	"github.com/shirou/gopsutil/v3/cpu"
 	"github.com/shirou/gopsutil/v3/disk"
+	"github.com/shirou/gopsutil/v3/host"
 	"github.com/shirou/gopsutil/v3/mem"
-	"os"
-	"runtime"
 	"time"
 )
 
-func GetOperatingSystem() string {
-	goos := runtime.GOOS
+func translateSystemOs(goos string) string {
 	switch goos {
 	case "darwin":
 		return "Apple MacOS"
@@ -26,12 +24,12 @@ func GetOperatingSystem() string {
 	}
 }
 
-func GetHostname() string {
-	hostname, err := os.Hostname()
+func GetSystemInformation() (string, string) {
+	sysInfo, err := host.Info()
 	if err != nil {
-		return "-"
+		return "", ""
 	}
-	return hostname
+	return sysInfo.Hostname, translateSystemOs(sysInfo.OS)
 }
 
 func StaticCpu() string {

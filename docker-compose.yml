@@ -3,7 +3,6 @@ version: '3.9'
 services:
   systemo-server:
     container_name: systemo-server
-    hostname: systemo-server
     restart: unless-stopped
     build: ./server/.
     environment:
