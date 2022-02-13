@@ -58,7 +58,7 @@ func StaticDisk() string {
 	return fmt.Sprintf("%.0f Gigabyte", float64(result.Total)/1000000000)
 }
 
-func liveCpu() string {
+func LiveCpu() string {
 	resultPercent, err := cpu.Percent(0, false)
 	if err != nil {
 		return "0 %"
@@ -66,7 +66,7 @@ func liveCpu() string {
 	return fmt.Sprintf("%.0f%%", resultPercent[0])
 }
 
-func liveRam() (string, string) {
+func LiveRam() (string, string) {
 	result, err := mem.VirtualMemory()
 	if err != nil {
 		return "0%", "0"
@@ -74,7 +74,7 @@ func liveRam() (string, string) {
 	return fmt.Sprintf("%.0f%%", result.UsedPercent), fmt.Sprintf("%.0f", float64(result.Used)/1000000)
 }
 
-func liveDisk() (string, string) {
+func LiveDisk() (string, string) {
 	result, err := disk.Usage("/")
 	if err != nil {
 		return "0%", "0"
@@ -85,9 +85,9 @@ func liveDisk() (string, string) {
 func GetLiveSystem(conn *websocket.Conn) {
 	var result Live
 	for {
-		result.Percentage.CPU = liveCpu()
-		result.Percentage.RAM, result.Values.RAM = liveRam()
-		result.Percentage.Disk, result.Values.Disk = liveDisk()
+		result.Percentage.CPU = LiveCpu()
+		result.Percentage.RAM, result.Values.RAM = LiveRam()
+		result.Percentage.Disk, result.Values.Disk = LiveDisk()
 
 		send, _ := json.Marshal(result)
 		err := conn.WriteMessage(websocket.TextMessage, send)

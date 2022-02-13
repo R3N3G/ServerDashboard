@@ -1,15 +1,19 @@
-package routers
+package server
 
 import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/go-chi/cors"
 	"github.com/gorilla/websocket"
-	"log"
 	"net/http"
 )
 
 func (wp *Webpage) initMiddleWare() {
+	wp.Router.Use(cors.Handler(cors.Options{
+		AllowedOrigins: []string{"http://localhost"},
+	}))
 	wp.Router.Use(middleware.Logger)
+	wp.Router.Use(middleware.Recoverer)
 }
 
 func (wp *Webpage) initRouter() {
@@ -17,14 +21,14 @@ func (wp *Webpage) initRouter() {
 }
 
 func (wp Webpage) serve(address string) {
-	log.Fatal(http.ListenAndServe(address, wp.Router))
+	http.ListenAndServe(address, wp.Router)
 }
 
-func Run() {
+func Run(address string) {
 	wp := Webpage{}
 	wp.Upgrader = websocket.Upgrader{}
 	wp.initRouter()
+	wp.initMiddleWare()
 	wp.defineRoutes()
-	wp.serveStatic("static")
-	wp.serve(":80")
+	wp.serve(address)
 }

@@ -1,4 +1,4 @@
-package routers
+package server
 
 import (
 	"code.unjx.de/systemo/helpers"
@@ -10,17 +10,11 @@ import (
 )
 
 func (wp *Webpage) defineRoutes() {
-	wp.Router.Get("/", wp.routeHome)
 	wp.Router.Route("/system", func(r chi.Router) {
 		r.Get("/ws/", wp.routeWebSocketSystem)
 		r.Get("/live/", wp.routeLiveStruct)
 		r.Get("/static/", wp.routeStaticStruct)
 	})
-}
-
-func (wp *Webpage) routeHome(w http.ResponseWriter, r *http.Request) {
-	wp.HtmlInformation.Title = "SystemO"
-	wp.parseHtml("./templates/index.html").Execute(w, wp.HtmlInformation)
 }
 
 func (wp *Webpage) routeWebSocketSystem(w http.ResponseWriter, r *http.Request) {
@@ -37,22 +31,24 @@ func (wp *Webpage) routeWebSocketSystem(w http.ResponseWriter, r *http.Request) 
 }
 
 func (wp *Webpage) routeLiveStruct(w http.ResponseWriter, r *http.Request) {
+	ramPercentage, ramValue := system.LiveRam()
+	diskPercentage, diskValue := system.LiveDisk()
 	var result = system.Live{
 		Values: struct {
 			RAM  string `json:"ram"`
 			Disk string `json:"disk"`
 		}{
-			RAM:  "",
-			Disk: "",
+			RAM:  ramValue,
+			Disk: diskValue,
 		},
 		Percentage: struct {
 			CPU  string `json:"cpu"`
 			RAM  string `json:"ram"`
 			Disk string `json:"disk"`
 		}{
-			CPU:  "",
-			RAM:  "",
-			Disk: "",
+			CPU:  system.LiveCpu(),
+			RAM:  ramPercentage,
+			Disk: diskPercentage,
 		},
 	}
 	helpers.JsonResponse(w, result, http.StatusOK)
