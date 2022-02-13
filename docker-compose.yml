@@ -10,9 +10,10 @@ services:
       HOST_PROC: /rootfs/proc
       HOST_SYS: /rootfs/sys
       HOST_ETC: /rootfs/etc
+      HOST_VAR: /rootfs/var
+      HOST_RUN: /rootfs/run
+      HOST_DEV: /rootfs/dev
     volumes:
-      - /proc:/rootfs/proc:ro
-      - /sys:/rootfs/sys:ro
-      - /etc:/rootfs/etc:ro
+      - /:/rootfs:ro
     ports:
       - "8700:8700"
