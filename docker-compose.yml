@@ -7,3 +7,9 @@ services:
     build: ./server/.
     ports:
       - "8700:8700"
+  systemo-client:
+    container_name: systemo-client
+    restart: unless-stopped
+    build: ./client/.
+    ports:
+      - "80:80"
