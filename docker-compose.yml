@@ -5,14 +5,5 @@ services:
     container_name: systemo-server
     restart: unless-stopped
     build: ./server/.
-    environment:
-      HOST_PROC: /rootfs/proc
-      HOST_SYS: /rootfs/sys
-      HOST_ETC: /rootfs/etc
-      HOST_VAR: /rootfs/var
-      HOST_RUN: /rootfs/run
-      HOST_DEV: /rootfs/dev
-    volumes:
-      - /:/rootfs:ro
-    ports:
-      - "8700:8700"
+    expose:
+      - 8700
