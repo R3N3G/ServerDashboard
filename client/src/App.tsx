@@ -1,10 +1,11 @@
 import React from 'react';
 import './App.css';
+import System from "./components/System";
 
 function App() {
     return (
         <div className="text-center">
-            <div>Hello,World</div>
+            <System/>
         </div>
     );
 }

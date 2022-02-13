@@ -5,5 +5,5 @@ services:
     container_name: systemo-server
     restart: unless-stopped
     build: ./server/.
-    expose:
-      - 8700
+    ports:
+      - "8700:8700"

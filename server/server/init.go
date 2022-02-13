@@ -10,7 +10,7 @@ import (
 
 func (wp *Webpage) initMiddleWare() {
 	wp.Router.Use(cors.Handler(cors.Options{
-		AllowedOrigins: []string{"http://localhost"},
+		AllowedOrigins: []string{"*"},
 	}))
 	wp.Router.Use(middleware.Logger)
 	wp.Router.Use(middleware.Recoverer)
