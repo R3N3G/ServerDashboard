@@ -1,0 +1,18 @@
+version: '3.9'
+
+services:
+  systemo-server:
+    container_name: systemo-server
+    hostname: systemo-server
+    restart: unless-stopped
+    build: ./server/.
+    environment:
+      HOST_PROC: /rootfs/proc
+      HOST_SYS: /rootfs/sys
+      HOST_ETC: /rootfs/etc
+    volumes:
+      - /proc:/rootfs/proc:ro
+      - /sys:/rootfs/sys:ro
+      - /etc:/rootfs/etc:ro
+    ports:
+      - "8700:8700"
