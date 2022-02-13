@@ -1,15 +1,23 @@
 version: '3.9'
 
+networks:
+  net:
+    external: false
+
 services:
   systemo-server:
     container_name: systemo-server
     restart: unless-stopped
     build: ./server/.
-    expose:
-      - 8700
+    ports:
+      - "8700:8700"
+    networks:
+      - net
   systemo-client:
     container_name: systemo-client
     restart: unless-stopped
     build: ./client/.
     ports:
-      - "8700:80"
+      - "3000:80"
+    networks:
+      - net
