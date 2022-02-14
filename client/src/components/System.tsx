@@ -20,14 +20,14 @@ const System = () => {
     }, [])
 
     const getLiveSystem = () => {
-        axios.get("http://localhost:8700/system/live/")
+        axios.get("http://127.0.0.1:8700/system/live/")
             .then((res) => {
                 const liveSystem: Live = res.data as Live;
                 setLiveSystem(liveSystem);
             });
     }
     const getStaticSystem = () => {
-        axios.get("http://localhost:8700/system/static/")
+        axios.get("http://127.0.0.1:8700/system/static/")
             .then((res) => {
                 const staticSystem: Static = res.data as Static;
                 setStaticSystem(staticSystem);
