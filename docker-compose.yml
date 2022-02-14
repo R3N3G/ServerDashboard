@@ -1,17 +1,12 @@
 version: '3.9'
 
 services:
-  systemo-server:
-    container_name: systemo-server
-    hostname: systemo-server
+  systemo:
+    container_name: systemo
     restart: unless-stopped
-    build: ./server/.
-    ports:
-      - "8700:8700"
-  systemo-client:
-    container_name: systemo-client
-    hostname: systemo-client
-    restart: unless-stopped
-    build: ./client/.
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: /bin/sh -c "./start.sh"
     ports:
       - "3000:80"
