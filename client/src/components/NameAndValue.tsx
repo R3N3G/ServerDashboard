@@ -3,7 +3,9 @@ import {FC} from "react";
 const NameAndValue: FC<Props> = ({name, value}) => {
 
     return (
-        <div>{name}: {value}</div>
+        <div>
+            {name}: {value}
+        </div>
     );
 }
 

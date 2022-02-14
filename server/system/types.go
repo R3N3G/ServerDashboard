@@ -6,9 +6,9 @@ type Live struct {
 		Disk string `json:"disk"`
 	} `json:"values"`
 	Percentage struct {
-		CPU  string `json:"cpu"`
-		RAM  string `json:"ram"`
-		Disk string `json:"disk"`
+		CPU  float64 `json:"cpu"`
+		RAM  float64 `json:"ram"`
+		Disk float64 `json:"disk"`
 	} `json:"percentage"`
 }
 

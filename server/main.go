@@ -6,5 +6,5 @@ import (
 
 func main() {
 	router := server.SetupServer()
-	server.Run(":8700", router)
+	server.Run(":4000", router)
 }

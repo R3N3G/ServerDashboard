@@ -5,6 +5,7 @@ import (
 	"code.unjx.de/systemo/system"
 	"fmt"
 	"github.com/go-chi/chi/v5"
+	"github.com/gorilla/websocket"
 	"net/http"
 	"runtime"
 )
@@ -18,7 +19,13 @@ func (wp *Webpage) defineRoutes() {
 }
 
 func (wp *Webpage) routeWebSocketSystem(w http.ResponseWriter, r *http.Request) {
-	conn, _ := wp.Upgrader.Upgrade(w, r, nil)
+	var upgrader = websocket.Upgrader{
+		ReadBufferSize:  1024,
+		WriteBufferSize: 1024,
+		CheckOrigin:     func(r *http.Request) bool { return true },
+	}
+	r.Header.Set("Access-Control-Allow-Origin", "*")
+	conn, _ := upgrader.Upgrade(w, r, nil)
 	defer conn.Close()
 	go system.GetLiveSystem(conn)
 	for {
@@ -42,9 +49,9 @@ func (wp *Webpage) routeLiveStruct(w http.ResponseWriter, r *http.Request) {
 			Disk: diskValue,
 		},
 		Percentage: struct {
-			CPU  string `json:"cpu"`
-			RAM  string `json:"ram"`
-			Disk string `json:"disk"`
+			CPU  float64 `json:"cpu"`
+			RAM  float64 `json:"ram"`
+			Disk float64 `json:"disk"`
 		}{
 			CPU:  system.LiveCpu(),
 			RAM:  ramPercentage,

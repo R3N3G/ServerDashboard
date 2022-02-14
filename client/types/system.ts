@@ -4,9 +4,9 @@ export interface Live {
         disk: string,
     },
     percentage: {
-        cpu: string,
-        ram: string,
-        disk: string,
+        cpu: number,
+        ram: number,
+        disk: number,
     },
 }
 

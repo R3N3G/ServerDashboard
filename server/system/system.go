@@ -52,28 +52,28 @@ func StaticDisk() string {
 	return fmt.Sprintf("%.0f Gigabyte", float64(result.Total)/1000000000)
 }
 
-func LiveCpu() string {
+func LiveCpu() float64 {
 	resultPercent, err := cpu.Percent(0, false)
 	if err != nil {
-		return "0 %"
+		return 0
 	}
-	return fmt.Sprintf("%.0f%%", resultPercent[0])
+	return resultPercent[0]
 }
 
-func LiveRam() (string, string) {
+func LiveRam() (float64, string) {
 	result, err := mem.VirtualMemory()
 	if err != nil {
-		return "0%", "0"
+		return 0, "0"
 	}
-	return fmt.Sprintf("%.0f%%", result.UsedPercent), fmt.Sprintf("%.0f", float64(result.Used)/1000000)
+	return result.UsedPercent, fmt.Sprintf("%.0f", float64(result.Used)/1000000)
 }
 
-func LiveDisk() (string, string) {
+func LiveDisk() (float64, string) {
 	result, err := disk.Usage("/")
 	if err != nil {
-		return "0%", "0"
+		return 0, "0"
 	}
-	return fmt.Sprintf("%.2f%%", result.UsedPercent), fmt.Sprintf("%.0f", float64(result.Used)/1000000000)
+	return result.UsedPercent, fmt.Sprintf("%.0f", float64(result.Used)/1000000000)
 }
 
 func GetLiveSystem(conn *websocket.Conn) {
