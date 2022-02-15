@@ -1,43 +1,63 @@
 package server
 
 import (
-	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/chi/v5/middleware"
-	"github.com/go-chi/cors"
+	"github.com/gin-contrib/cors"
+	"github.com/gin-contrib/static"
+	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 	"net/http"
-	"strings"
+	"os"
 )
 
-var clientUrl = "https://sys.tp.unjx.de/"
-
-func (wp *Webpage) initMiddleWare() {
-	wp.Router.Use(cors.Handler(cors.Options{
-		AllowedOrigins: strings.Split(wp.AllowOrigin, ","),
-	}))
-	wp.Router.Use(middleware.Recoverer)
+type Webpage struct {
+	Router    *gin.Engine
+	Websocket *websocket.Conn
+	WsUpgrade websocket.Upgrader
+	SiteUrl   string
 }
 
-func (wp *Webpage) initRouter() {
-	wp.Upgrader = websocket.Upgrader{
-		ReadBufferSize:  1024,
-		WriteBufferSize: 1024,
-		CheckOrigin:     func(r *http.Request) bool { return true },
+func (wp *Webpage) setEnvironmentVariables() {
+	siteUrl, ok := os.LookupEnv("PROXY_URL")
+	if !ok {
+		siteUrl = "http://localhost:3000"
 	}
-	wp.Router = chi.NewRouter()
+	wp.SiteUrl = siteUrl
 }
 
-func SetupServer(allowedOrigin string) *chi.Mux {
-	wp := Webpage{}
-	wp.AllowOrigin = allowedOrigin
-	wp.initRouter()
-	wp.initMiddleWare()
+func (wp *Webpage) setMiddlewares() {
+	wp.Router.Use(gin.Recovery())
+	wp.Router.Use(cors.New(cors.Config{
+		AllowOrigins: []string{wp.SiteUrl},
+	}))
+	wp.Router.SetTrustedProxies([]string{wp.SiteUrl})
+}
+
+func (wp *Webpage) serveStatic(staticFolders []string) {
+	for _, folder := range staticFolders {
+		wp.Router.Use(
+			static.Serve("/"+folder,
+				static.LocalFile("./"+folder, false),
+			),
+		)
+	}
+}
+
+func SetupServer() *gin.Engine {
+	wp := Webpage{
+		Router: gin.New(),
+		WsUpgrade: websocket.Upgrader{
+			ReadBufferSize:  1024,
+			WriteBufferSize: 1024,
+			CheckOrigin:     func(r *http.Request) bool { return true },
+		},
+	}
+	wp.setEnvironmentVariables()
+	wp.setMiddlewares()
+	wp.Router.LoadHTMLGlob("templates/*")
+	wp.serveStatic([]string{
+		"static",
+		"favicon",
+	})
 	wp.defineRoutes()
-	serveStatic(wp.Router, "static")
-	serveStatic(wp.Router, "favicon")
 	return wp.Router
-}
-
-func Run(address string, router *chi.Mux) {
-	http.ListenAndServe(address, router)
 }

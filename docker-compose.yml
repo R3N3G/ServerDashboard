@@ -8,6 +8,8 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        - REACT_APP_SITE_URL=https://sys.tp.unjx.de
+        - PROXY_URL=https://sys.tp.unjx.de
+    environment:
+      - GIN_MODE=release
     ports:
       - "127.0.0.1:4000:4000"

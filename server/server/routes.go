@@ -1,35 +1,32 @@
 package server
 
 import (
-	"code.unjx.de/systemo/helpers"
 	"code.unjx.de/systemo/system"
 	"fmt"
-	"github.com/go-chi/chi/v5"
-	"html/template"
+	"github.com/gin-gonic/gin"
 	"net/http"
 	"runtime"
 )
 
 func (wp *Webpage) defineRoutes() {
-	wp.Router.Get("/", wp.routeHome)
-	wp.Router.Route("/system", func(r chi.Router) {
-		r.Get("/static/", wp.routeStaticStruct)
-		r.Get("/ws/", wp.routeWebSocketSystem)
-	})
+	wp.Router.GET("/", wp.routeHome)
+	routeSystem := wp.Router.Group("/system")
+	{
+		routeSystem.GET("/static/", wp.routeStaticStruct)
+		routeSystem.GET("/ws/", wp.routeWebSocketSystem)
+	}
+	wp.Router.NoRoute(wp.noRoute)
 }
 
-func (wp *Webpage) routeHome(w http.ResponseWriter, r *http.Request) {
-	parsedHtml, err := template.ParseFiles("./templates/index.html")
-	if err != nil {
-		fmt.Println("Cannot parse template:", err)
-	}
-	err = parsedHtml.Execute(w, nil)
-	if err != nil {
-		fmt.Println("Cannot execute template:", err)
-	}
+func (wp *Webpage) routeHome(c *gin.Context) {
+	c.HTML(http.StatusOK, "index.html", nil)
 }
 
-func (wp *Webpage) routeStaticStruct(w http.ResponseWriter, r *http.Request) {
+func (wp *Webpage) noRoute(c *gin.Context) {
+	c.Redirect(http.StatusTemporaryRedirect, "/")
+}
+
+func (wp *Webpage) routeStaticStruct(c *gin.Context) {
 	var result = system.Static{
 		Values: struct {
 			CPU  string `json:"cpu"`
@@ -50,12 +47,12 @@ func (wp *Webpage) routeStaticStruct(w http.ResponseWriter, r *http.Request) {
 			GoVersion:             runtime.Version(),
 		},
 	}
-	helpers.JsonResponse(w, result, http.StatusOK)
+	c.JSON(200, result)
 }
 
-func (wp *Webpage) routeWebSocketSystem(w http.ResponseWriter, r *http.Request) {
-	conn, _ := wp.Upgrader.Upgrade(w, r, nil)
-	r.Header.Set("Access-Control-Allow-Origin", wp.AllowOrigin)
+func (wp *Webpage) routeWebSocketSystem(c *gin.Context) {
+	conn, _ := wp.WsUpgrade.Upgrade(c.Writer, c.Request, nil)
+	c.Request.Header.Set("Access-Control-Allow-Origin", wp.SiteUrl)
 	defer conn.Close()
 	go system.GetLiveSystem(conn)
 	for {

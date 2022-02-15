@@ -5,7 +5,6 @@ import (
 )
 
 func main() {
-	// allowed Origins as string comma seperated
-	router := server.SetupServer("https://sys.tp.unjx.de/,http://localhost:3000")
-	server.Run(":4000", router)
+	router := server.SetupServer()
+	router.Run(":4000")
 }
