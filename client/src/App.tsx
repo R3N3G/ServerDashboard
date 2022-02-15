@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import System from "./components/System";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {API_ENDPOINT_URL} from "../config";
+import {API_ENDPOINT_URL} from "./config";
 
 function App() {
     return (
