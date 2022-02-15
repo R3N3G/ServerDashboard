@@ -5,9 +5,9 @@ services:
     container_name: systemo
     restart: unless-stopped
     build:
-      args:
-        - REACT_API_ENDPOINT_URL=https://sys.tp.unjx.de/
       context: .
       dockerfile: Dockerfile
+      args:
+        REACT_API_ENDPOINT_URL: "https://sys.tp.unjx.de/"
     ports:
       - "127.0.0.1:4000:4000"
