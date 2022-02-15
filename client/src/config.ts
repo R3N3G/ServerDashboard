@@ -1,1 +1,1 @@
-export const API_ENDPOINT_URL = process.env.REACT_API_ENDPOINT_URL || 'http://localhost:4000/system'
+export const APP_SITE_URL = process.env.REACT_APP_SITE_URL || 'http://localhost:4000';

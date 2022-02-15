@@ -1,9 +1,9 @@
 FROM node:17-alpine AS client
-ARG REACT_API_ENDPOINT_URL
-ENV REACT_API_ENDPOINT_URL=$REACT_API_ENDPOINT_URL
+ARG REACT_APP_SITE_URL
+ENV REACT_APP_SITE_URL $REACT_APP_SITE_URL
 WORKDIR /client
 COPY ./client .
-RUN npm install
+RUN npm install --silent
 RUN npm run build
 
 FROM golang:alpine AS server

@@ -6,8 +6,9 @@ import axios from "axios";
 
 const System: FC<Props> = ({serverUrl}) => {
     let webSocket;
-    const webSocketUrl = serverUrl.replace("http", "ws") + '/ws/';
-    const staticSystemUrl = serverUrl + '/static/';
+    let lala = process.env.APP_SITE_URL;
+    const webSocketUrl = serverUrl.replace("http", "ws") + '/system/ws/';
+    const staticSystemUrl = serverUrl + '/system/static/';
 
     const [liveSystem, setLiveSystem] = useState<Live>({
         percentage: {cpu: 0, disk: 0, ram: 0},
@@ -52,6 +53,8 @@ const System: FC<Props> = ({serverUrl}) => {
     return (
         <div>
             <h1 className={"mb-5 fw-bolder"}>Live-System</h1>
+            <div>VAR: {serverUrl}</div>
+            <div>ENV: {lala}</div>
             <div className={"mb-5 card"}>
                 <div className={"card-body"}>
                     <LiveSystem name={"CPU"} variant={"danger"}
