@@ -5,8 +5,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
     return (
-        <div className="text-center">
-            <System/>
+        <div className={"container position-absolute top-50 start-50 translate-middle card"}>
+            <div className={"card-body"}>
+                <System serverUrl={"http://localhost:3000/system"}/>
+            </div>
         </div>
     );
 }

@@ -5,60 +5,28 @@ import (
 	"code.unjx.de/systemo/system"
 	"fmt"
 	"github.com/go-chi/chi/v5"
-	"github.com/gorilla/websocket"
+	"html/template"
 	"net/http"
 	"runtime"
 )
 
 func (wp *Webpage) defineRoutes() {
+	wp.Router.Get("/", wp.routeHome)
 	wp.Router.Route("/system", func(r chi.Router) {
-		r.Get("/ws/", wp.routeWebSocketSystem)
-		r.Get("/live/", wp.routeLiveStruct)
 		r.Get("/static/", wp.routeStaticStruct)
+		r.Get("/ws/", wp.routeWebSocketSystem)
 	})
 }
 
-func (wp *Webpage) routeWebSocketSystem(w http.ResponseWriter, r *http.Request) {
-	var upgrader = websocket.Upgrader{
-		ReadBufferSize:  1024,
-		WriteBufferSize: 1024,
-		CheckOrigin:     func(r *http.Request) bool { return true },
+func (wp *Webpage) routeHome(w http.ResponseWriter, r *http.Request) {
+	parsedHtml, err := template.ParseFiles("./templates/index.html")
+	if err != nil {
+		fmt.Println("Cannot parse template:", err)
 	}
-	r.Header.Set("Access-Control-Allow-Origin", "*")
-	conn, _ := upgrader.Upgrade(w, r, nil)
-	defer conn.Close()
-	go system.GetLiveSystem(conn)
-	for {
-		_, message, err := conn.ReadMessage()
-		if err != nil {
-			break
-		}
-		fmt.Println(message)
+	err = parsedHtml.Execute(w, nil)
+	if err != nil {
+		fmt.Println("Cannot execute template:", err)
 	}
-}
-
-func (wp *Webpage) routeLiveStruct(w http.ResponseWriter, r *http.Request) {
-	ramPercentage, ramValue := system.LiveRam()
-	diskPercentage, diskValue := system.LiveDisk()
-	var result = system.Live{
-		Values: struct {
-			RAM  string `json:"ram"`
-			Disk string `json:"disk"`
-		}{
-			RAM:  ramValue,
-			Disk: diskValue,
-		},
-		Percentage: struct {
-			CPU  float64 `json:"cpu"`
-			RAM  float64 `json:"ram"`
-			Disk float64 `json:"disk"`
-		}{
-			CPU:  system.LiveCpu(),
-			RAM:  ramPercentage,
-			Disk: diskPercentage,
-		},
-	}
-	helpers.JsonResponse(w, result, http.StatusOK)
 }
 
 func (wp *Webpage) routeStaticStruct(w http.ResponseWriter, r *http.Request) {
@@ -83,4 +51,17 @@ func (wp *Webpage) routeStaticStruct(w http.ResponseWriter, r *http.Request) {
 		},
 	}
 	helpers.JsonResponse(w, result, http.StatusOK)
+}
+
+func (wp *Webpage) routeWebSocketSystem(w http.ResponseWriter, r *http.Request) {
+	conn, _ := wp.Upgrader.Upgrade(w, r, nil)
+	defer conn.Close()
+	go system.GetLiveSystem(conn)
+	for {
+		_, message, err := conn.ReadMessage()
+		if err != nil {
+			break
+		}
+		fmt.Println(message)
+	}
 }

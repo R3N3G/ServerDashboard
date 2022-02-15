@@ -11,9 +11,9 @@ RUN go mod download
 RUN go mod verify
 RUN go build -o app
 
-FROM nginx:alpine AS final
-WORKDIR /
+FROM alpine AS final
+WORKDIR /app
 COPY --from=server /server/app .
-COPY --from=client /client/build /usr/share/nginx/html
-COPY ./nginx/nginx.conf /etc/nginx/conf.d/default.conf
-COPY ./start.sh .
+COPY --from=client /client/build/index.html ./templates/index.html
+COPY --from=client /client/build/static/ ./static/
+CMD ["./app"]

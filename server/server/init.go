@@ -3,16 +3,10 @@ package server
 import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
-	"github.com/go-chi/cors"
-	"github.com/gorilla/websocket"
 	"net/http"
 )
 
 func (wp *Webpage) initMiddleWare() {
-	wp.Router.Use(cors.Handler(cors.Options{
-		AllowedOrigins: []string{"*"},
-	}))
-	wp.Router.Use(middleware.Logger)
 	wp.Router.Use(middleware.Recoverer)
 }
 
@@ -22,10 +16,10 @@ func (wp *Webpage) initRouter() {
 
 func SetupServer() *chi.Mux {
 	wp := Webpage{}
-	wp.Upgrader = websocket.Upgrader{}
 	wp.initRouter()
 	wp.initMiddleWare()
 	wp.defineRoutes()
+	serveStatic(wp.Router, "static")
 	return wp.Router
 }
 
