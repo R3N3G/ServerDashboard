@@ -1,14 +1,14 @@
 FROM node:17-alpine AS client
-ARG PROXY_URL
-ENV PROXY_URL $PROXY_URL
+ARG REACT_APP_SITE_URL
+ENV REACT_APP_SITE_URL $REACT_APP_SITE_URL
 WORKDIR /client
 COPY ./client .
 RUN npm install --silent
 RUN npm run build
 
 FROM golang:alpine AS server
-ARG PROXY_URL
-ENV PROXY_URL $PROXY_URL
+ARG REACT_APP_SITE_URL
+ENV REACT_APP_SITE_URL $REACT_APP_SITE_URL
 WORKDIR /server
 COPY ./server .
 RUN go mod download
