@@ -3,6 +3,7 @@ import LiveSystem from "./LiveSystem";
 import React, {FC, useEffect, useState} from "react";
 import {Live, Static} from "../../types/system";
 import axios from "axios";
+import {faHardDrive, faMemory, faMicrochip} from "@fortawesome/free-solid-svg-icons";
 
 const System: FC<Props> = ({serverUrl}) => {
     let webSocket;
@@ -50,20 +51,8 @@ const System: FC<Props> = ({serverUrl}) => {
     }
 
     return (
-        <div>
-            <h1 className={"mb-5 fw-bolder"}>Live-System</h1>
+        <div className={"text-center"}>
             <div className={"mb-5"}>
-                <LiveSystem name={"CPU"} variant={"danger"}
-                            value={staticSystem.values.cpu}
-                            percentage={liveSystem.percentage.cpu}/>
-                <LiveSystem name={"Memory"} variant={"warning"}
-                            value={liveSystem.values.ram + "/" + staticSystem.values.ram}
-                            percentage={liveSystem.percentage.ram}/>
-                <LiveSystem name={"Disk"} variant={"info"}
-                            value={liveSystem.values.disk + "/" + staticSystem.values.disk}
-                            percentage={liveSystem.percentage.disk}/>
-            </div>
-            <div>
                 <StaticSystem name={"OS"}
                               variant={"primary"}
                               value={staticSystem.extras.operating_system}/>
@@ -73,6 +62,17 @@ const System: FC<Props> = ({serverUrl}) => {
                 <StaticSystem name={"Go"}
                               variant={"primary"}
                               value={staticSystem.extras.go_version}/>
+            </div>
+            <div>
+                <LiveSystem name={"CPU"} variant={"danger"} icon={faMicrochip}
+                            value={staticSystem.values.cpu}
+                            percentage={liveSystem.percentage.cpu}/>
+                <LiveSystem name={"Memory"} variant={"warning"} icon={faMemory}
+                            value={liveSystem.values.ram + "/" + staticSystem.values.ram}
+                            percentage={liveSystem.percentage.ram}/>
+                <LiveSystem name={"Disk"} variant={"info"} icon={faHardDrive}
+                            value={liveSystem.values.disk + "/" + staticSystem.values.disk}
+                            percentage={liveSystem.percentage.disk}/>
             </div>
         </div>
     );

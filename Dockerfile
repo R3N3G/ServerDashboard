@@ -18,4 +18,5 @@ WORKDIR /app
 COPY --from=server /server/app .
 COPY --from=client /client/build/index.html ./templates/index.html
 COPY --from=client /client/build/static/ ./static/
+COPY --from=client /client/build/favicon/ ./favicon/
 CMD ["./app"]

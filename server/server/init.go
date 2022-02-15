@@ -34,6 +34,7 @@ func SetupServer(allowedOrigin string) *chi.Mux {
 	wp.initMiddleWare()
 	wp.defineRoutes()
 	serveStatic(wp.Router, "static")
+	serveStatic(wp.Router, "favicon")
 	return wp.Router
 }
 
