@@ -9,6 +9,7 @@ type Webpage struct {
 	Router          *chi.Mux
 	Websocket       *websocket.Conn
 	Upgrader        websocket.Upgrader
+	AllowOrigin     string
 	HtmlInformation struct {
 		Title string
 	}
