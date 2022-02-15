@@ -5,7 +5,6 @@ import (
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
-	"net/http"
 	"os"
 )
 
@@ -44,12 +43,8 @@ func (wp *Webpage) serveStatic(staticFolders []string) {
 
 func SetupServer() *gin.Engine {
 	wp := Webpage{
-		Router: gin.New(),
-		WsUpgrade: websocket.Upgrader{
-			ReadBufferSize:  1024,
-			WriteBufferSize: 1024,
-			CheckOrigin:     func(r *http.Request) bool { return true },
-		},
+		Router:    gin.New(),
+		WsUpgrade: websocket.Upgrader{},
 	}
 	wp.setEnvironmentVariables()
 	wp.setMiddlewares()

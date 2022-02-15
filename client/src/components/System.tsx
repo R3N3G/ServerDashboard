@@ -7,7 +7,7 @@ import {faHardDrive, faMemory, faMicrochip} from "@fortawesome/free-solid-svg-ic
 
 const System: FC<Props> = ({serverUrl}) => {
     let webSocket;
-    const webSocketUrl = serverUrl.replace("http", "ws") + '/system/ws/';
+    const webSocketUrl = serverUrl.replace("http", "ws").replace("wss", "ws") + '/system/ws/';
     const staticSystemUrl = serverUrl + '/system/static/';
 
     const [liveSystem, setLiveSystem] = useState<Live>({
