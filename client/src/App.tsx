@@ -5,10 +5,8 @@ import './customStyle.scss';
 
 function App() {
     return (
-        <div className={"container position-absolute top-50 start-50 translate-middle card bg-dark p-1"}>
-            <div className={"card-body"}>
-                <System serverUrl={APP_SITE_URL}/>
-            </div>
+        <div className={"container position-absolute top-50 start-50 translate-middle"}>
+            <System serverUrl={APP_SITE_URL}/>
         </div>
     );
 }

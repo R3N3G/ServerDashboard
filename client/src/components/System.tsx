@@ -1,9 +1,9 @@
-import StaticSystem from "./StaticSystem";
-import LiveSystem from "./LiveSystem";
 import React, {FC, useEffect, useState} from "react";
-import {Live, Static} from "../../types/system";
+import {Live, Static, SystemType} from "../../types/system";
 import axios from "axios";
-import {faHardDrive, faMemory, faMicrochip} from "@fortawesome/free-solid-svg-icons";
+import {faHardDrive, faMemory, faMicrochip, faServer} from "@fortawesome/free-solid-svg-icons";
+import LiveComponent from "./LiveComponent";
+import ExtrasComponent from "./ExtrasComponent";
 
 const System: FC<Props> = ({serverUrl}) => {
     let webSocket;
@@ -18,6 +18,21 @@ const System: FC<Props> = ({serverUrl}) => {
         extras: {go_version: "", operating_system: "", processor_architecture: ""},
         values: {cpu: "", disk: "", ram: ""}
     })
+    const [systemCpu] = useState<SystemType>({
+        color: "danger",
+        icon: faMicrochip,
+        name: "CPU",
+    });
+    const [systemRam] = useState<SystemType>({
+        color: "warning",
+        icon: faMemory,
+        name: "Memory",
+    });
+    const [systemDisk] = useState<SystemType>({
+        color: "info",
+        icon: faHardDrive,
+        name: "Disk",
+    });
 
     useEffect(() => {
         initWebsocket();
@@ -52,27 +67,30 @@ const System: FC<Props> = ({serverUrl}) => {
 
     return (
         <div className={"text-center"}>
-            <div className={"mb-5"}>
-                <StaticSystem name={"OS"}
-                              variant={"primary"}
-                              value={staticSystem.extras.operating_system}/>
-                <StaticSystem name={"Architecture"}
-                              variant={"primary"}
-                              value={staticSystem.extras.processor_architecture}/>
-                <StaticSystem name={"Go"}
-                              variant={"primary"}
-                              value={staticSystem.extras.go_version}/>
-            </div>
-            <div>
-                <LiveSystem name={"CPU"} variant={"danger"} icon={faMicrochip}
-                            value={staticSystem.values.cpu}
-                            percentage={liveSystem.percentage.cpu}/>
-                <LiveSystem name={"Memory"} variant={"warning"} icon={faMemory}
-                            value={liveSystem.values.ram + " / " + staticSystem.values.ram}
-                            percentage={liveSystem.percentage.ram}/>
-                <LiveSystem name={"Disk"} variant={"info"} icon={faHardDrive}
-                            value={liveSystem.values.disk + " / " + staticSystem.values.disk}
-                            percentage={liveSystem.percentage.disk}/>
+            <div className={"row g-3"}>
+                <ExtrasComponent
+                    systemType={staticSystem.extras}
+                    icon={faServer}
+                    name={"System"}
+                    color={"primary"}
+                />
+                <LiveComponent
+                    systemType={systemCpu}
+                    percentage={liveSystem.percentage.cpu}
+                    staticValue={staticSystem.values.cpu}
+                />
+                <LiveComponent
+                    systemType={systemRam}
+                    percentage={liveSystem.percentage.ram}
+                    liveValue={liveSystem.values.ram}
+                    staticValue={staticSystem.values.ram}
+                />
+                <LiveComponent
+                    systemType={systemDisk}
+                    percentage={liveSystem.percentage.disk}
+                    liveValue={liveSystem.values.disk}
+                    staticValue={staticSystem.values.disk}
+                />
             </div>
         </div>
     );
