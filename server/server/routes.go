@@ -52,7 +52,7 @@ func (wp *Webpage) routeStaticStruct(c *gin.Context) {
 
 func (wp *Webpage) routeWebSocketSystem(c *gin.Context) {
 	conn, _ := wp.WsUpgrade.Upgrade(c.Writer, c.Request, nil)
-	c.Request.Header.Set("Access-Control-Allow-Origin", wp.SiteUrl)
+	c.Request.Header.Set("Access-Control-Allow-Origin", "*")
 	defer conn.Close()
 	go system.GetLiveSystem(conn)
 	for {

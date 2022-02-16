@@ -1,14 +1,13 @@
 version: '3.9'
 
 services:
-  systemo:
-    container_name: systemo
+  dashboard:
+    container_name: dashboard
     restart: unless-stopped
     build:
       context: .
       dockerfile: Dockerfile
     environment:
       - GIN_MODE=release
-      - SITE_URL=https://sys.tp.unjx.de
     ports:
       - "127.0.0.1:4000:4000"

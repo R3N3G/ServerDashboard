@@ -31,8 +31,8 @@ func GetSystemOs() string {
 
 func StaticCpu() string {
 	result, err := cpu.Info()
-	if err != nil {
-		return ""
+	if err != nil || result[0].ModelName == "" {
+		return "none detected"
 	}
 	return fmt.Sprintf("%s", result[0].ModelName)
 }

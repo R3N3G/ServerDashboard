@@ -6,7 +6,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 	"net/http"
-	"os"
 )
 
 type Webpage struct {
@@ -16,20 +15,12 @@ type Webpage struct {
 	SiteUrl   string
 }
 
-func (wp *Webpage) setEnvironmentVariables() {
-	siteUrl, ok := os.LookupEnv("SITE_URL")
-	if !ok {
-		siteUrl = "http://localhost:3000"
-	}
-	wp.SiteUrl = siteUrl
-}
-
 func (wp *Webpage) setMiddlewares() {
 	wp.Router.Use(gin.Recovery())
 	wp.Router.Use(cors.New(cors.Config{
-		AllowOrigins: []string{wp.SiteUrl},
+		AllowOrigins: []string{"*"},
 	}))
-	wp.Router.SetTrustedProxies([]string{wp.SiteUrl})
+	wp.Router.SetTrustedProxies(nil)
 }
 
 func (wp *Webpage) serveStatic(staticFolders []string) {
@@ -51,7 +42,6 @@ func SetupServer() *gin.Engine {
 			CheckOrigin:     func(r *http.Request) bool { return true },
 		},
 	}
-	wp.setEnvironmentVariables()
 	wp.setMiddlewares()
 	wp.Router.LoadHTMLGlob("templates/*")
 	wp.serveStatic([]string{
