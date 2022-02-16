@@ -1,5 +1,7 @@
 # Server Dashboard
 
+![screenshot](images/screenshot.png)
+
 a small live server dashboard written in go and react.
 
 ## Frontend
