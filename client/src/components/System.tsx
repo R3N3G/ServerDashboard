@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState} from "react";
+import React, {FC, useCallback, useEffect, useRef, useState} from "react";
 import {Live, Static, SystemType} from "../../types/system";
 import axios from "axios";
 import {faHardDrive, faMemory, faMicrochip, faServer} from "@fortawesome/free-solid-svg-icons";
@@ -6,10 +6,10 @@ import LiveComponent from "./LiveComponent";
 import ExtrasComponent from "./ExtrasComponent";
 
 const System: FC<Props> = ({serverUrl}) => {
-    let webSocket;
     const webSocketUrl = serverUrl.replace('http', 'ws') + '/system/ws/';
     const staticSystemUrl = serverUrl + '/system/static/';
 
+    const webSocket = useRef<WebSocket | null>(null);
     const [liveSystem, setLiveSystem] = useState<Live>({
         percentage: {cpu: 0, disk: 0, ram: 0},
         values: {disk: "", ram: ""}
@@ -34,36 +34,36 @@ const System: FC<Props> = ({serverUrl}) => {
         name: "Disk",
     });
 
-    useEffect(() => {
-        initWebsocket();
-        getStaticSystem();
-    }, [])
-
-    const initWebsocket = () => {
-        webSocket = new WebSocket(webSocketUrl)
-        if (webSocket) {
-            webSocket.onclose = () => {
+    const initWebsocket = useCallback(() => {
+        webSocket.current = new WebSocket(webSocketUrl);
+        if (webSocket.current) {
+            webSocket.current.onclose = () => {
                 setTimeout(function () {
                     initWebsocket();
                 }, 2000);
             };
-            webSocket.onmessage = (evt) => {
+            webSocket.current.onmessage = (evt) => {
                 const message: Live = JSON.parse(evt.data)
                 setLiveSystem(message);
             }
-            webSocket.onclose = () => {
-                webSocket = null;
+            webSocket.current.onclose = () => {
+                webSocket.current = null;
             }
         }
-    }
+    }, [webSocket, webSocketUrl]);
 
-    const getStaticSystem = () => {
+    const getStaticSystem = useCallback(() => {
         axios.get(staticSystemUrl)
             .then((res) => {
                 const staticSystem: Static = res.data as Static;
                 setStaticSystem(staticSystem);
             });
-    }
+    }, [staticSystemUrl]);
+
+    useEffect(() => {
+        initWebsocket();
+        getStaticSystem();
+    }, [initWebsocket, getStaticSystem])
 
     return (
         <div className={"row vh-100 align-items-center text-center"}>
