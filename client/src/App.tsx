@@ -1,7 +1,7 @@
 import React from 'react';
 import System from "./components/System";
 import {APP_SITE_URL} from "./config";
-import './css/customStyle.css';
+import './customStyle.scss';
 
 function App() {
     return (
