@@ -21,5 +21,3 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-!/src/customStyle.css
-!/src/customStyle.css.map
