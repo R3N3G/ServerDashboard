@@ -5,7 +5,7 @@ WORKDIR /client
 ENV PATH ./node_modules/.bin:$PATH
 COPY ./client .
 RUN npm install --silent
-RUN sass ./src/customStyle.scss [./node_modules/bootstrap/customStyle.css]
+RUN sass ./src/customStyle.scss [./css/customStyle.css]
 RUN npm run build
 
 FROM golang:alpine AS server
