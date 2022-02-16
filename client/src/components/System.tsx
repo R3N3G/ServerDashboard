@@ -68,10 +68,10 @@ const System: FC<Props> = ({serverUrl}) => {
                             value={staticSystem.values.cpu}
                             percentage={liveSystem.percentage.cpu}/>
                 <LiveSystem name={"Memory"} variant={"warning"} icon={faMemory}
-                            value={liveSystem.values.ram + "/" + staticSystem.values.ram}
+                            value={liveSystem.values.ram + " / " + staticSystem.values.ram}
                             percentage={liveSystem.percentage.ram}/>
                 <LiveSystem name={"Disk"} variant={"info"} icon={faHardDrive}
-                            value={liveSystem.values.disk + "/" + staticSystem.values.disk}
+                            value={liveSystem.values.disk + " / " + staticSystem.values.disk}
                             percentage={liveSystem.percentage.disk}/>
             </div>
         </div>

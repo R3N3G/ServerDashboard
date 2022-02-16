@@ -13,7 +13,7 @@ const LiveSystem: FC<Props> = (props) => {
                 span>{props.name}: </span>
                 <span className={"text-" + props.variant}>{props.value}</span>
             </div>
-            <ProgressBar animated now={props.percentage} variant={props.variant}/>
+            <ProgressBar min={0} max={100} animated now={props.percentage} variant={props.variant}/>
         </div>
     );
 }

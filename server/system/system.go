@@ -8,6 +8,7 @@ import (
 	"github.com/shirou/gopsutil/v3/disk"
 	"github.com/shirou/gopsutil/v3/host"
 	"github.com/shirou/gopsutil/v3/mem"
+	"math"
 	"time"
 )
 
@@ -57,7 +58,7 @@ func LiveCpu() float64 {
 	if err != nil {
 		return 0
 	}
-	return resultPercent[0]
+	return math.RoundToEven(resultPercent[0])
 }
 
 func LiveRam() (float64, string) {
@@ -65,7 +66,7 @@ func LiveRam() (float64, string) {
 	if err != nil {
 		return 0, "0"
 	}
-	return result.UsedPercent, fmt.Sprintf("%.0f", float64(result.Used)/1000000)
+	return math.RoundToEven(result.UsedPercent), fmt.Sprintf("%.0f", float64(result.Used)/1000000)
 }
 
 func LiveDisk() (float64, string) {
@@ -73,7 +74,7 @@ func LiveDisk() (float64, string) {
 	if err != nil {
 		return 0, "0"
 	}
-	return result.UsedPercent, fmt.Sprintf("%.0f", float64(result.Used)/1000000000)
+	return math.RoundToEven(result.UsedPercent), fmt.Sprintf("%.0f", float64(result.Used)/1000000000)
 }
 
 func GetLiveSystem(conn *websocket.Conn) {
