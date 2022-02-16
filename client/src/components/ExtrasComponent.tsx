@@ -9,7 +9,7 @@ const ExtrasComponent: FC<Props> = ({systemType, icon, name, color}) => {
             <div className={`card ${"border-" + color} rounded`}>
                 <div className={"card-body"}>
                     <div className={"mb-2"}>
-                        <FontAwesomeIcon icon={icon} size="3x"/>
+                        <FontAwesomeIcon icon={icon} size="2x"/>
                     </div>
                     <div className={"mb-2"}>
                         {name}

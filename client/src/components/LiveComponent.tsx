@@ -9,7 +9,7 @@ const LiveComponent: FC<Props> = ({systemType, percentage, staticValue, liveValu
             <div className={`card ${"color" in systemType && "border-" + systemType.color} rounded`}>
                 <div className={"card-body"}>
                     <div className={"mb-2"}>
-                        <FontAwesomeIcon icon={systemType.icon} size="3x"/>
+                        <FontAwesomeIcon icon={systemType.icon} size="2x"/>
                     </div>
                     <div className={"mb-2"}>
                         {systemType.name}

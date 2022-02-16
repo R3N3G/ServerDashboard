@@ -5,7 +5,7 @@ import './customStyle.scss';
 
 function App() {
     return (
-        <div className={"container position-absolute top-50 start-50 translate-middle"}>
+        <div className={"container"}>
             <System serverUrl={APP_SITE_URL}/>
         </div>
     );

@@ -66,8 +66,8 @@ const System: FC<Props> = ({serverUrl}) => {
     }
 
     return (
-        <div className={"text-center"}>
-            <div className={"row g-3"}>
+        <div className={"row vh-100 align-items-center text-center"}>
+            <div className={"row g-3 m-0"}>
                 <ExtrasComponent
                     systemType={staticSystem.extras}
                     icon={faServer}
