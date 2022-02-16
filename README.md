@@ -2,12 +2,22 @@
 
 ![screenshot](images/screenshot.png)
 
-a small live server dashboard written in go and react.
+written in Go and React
 
-## Frontend
-![](https://img.shields.io/badge/Framework-React-informational?style=for-the-badge&logo=react&color=61DAFB)
-![](https://img.shields.io/badge/Web-TypeScript-informational?style=for-the-badge&logo=typescript&color=3178C6)
-![](https://img.shields.io/badge/Web-Boostrap-informational?style=for-the-badge&logo=bootstrap&color=7952B3)
+[https://hub.docker.com/repository/docker/florianhoss/serverdashboard](https://hub.docker.com/repository/docker/florianhoss/serverdashboard)
 
-# Backend
-![](https://img.shields.io/badge/Language-Go-informational?style=for-the-badge&logo=go&color=00ADD8)
+## docker-compose example:
+
+```
+version: '3.9'
+
+services:
+  dashboard:
+    image: florianhoss/serverdashboard:latest
+    container_name: dashboard
+    restart: unless-stopped
+    environment:
+      - GIN_MODE=release
+    ports:
+      - "4000:4000"
+```
