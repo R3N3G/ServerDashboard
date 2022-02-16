@@ -1,13 +1,14 @@
-import React, {FC, useCallback, useEffect, useRef, useState} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import {Live, Static, SystemType} from "../../types/system";
 import axios from "axios";
 import {faHardDrive, faMemory, faMicrochip, faServer} from "@fortawesome/free-solid-svg-icons";
 import LiveComponent from "./LiveComponent";
 import ExtrasComponent from "./ExtrasComponent";
 
-const System: FC<Props> = ({serverUrl}) => {
-    const webSocketUrl = serverUrl.replace('http', 'ws') + '/system/ws/';
-    const staticSystemUrl = serverUrl + '/system/static/';
+const System = () => {
+    const origin = process.env.NODE_ENV == "development" ? "http://localhost:4000" : window.origin;
+    const webSocketUrl = origin.replace('http', 'ws') + '/system/ws/';
+    const staticSystemUrl = origin + '/system/static/';
 
     const webSocket = useRef<WebSocket | null>(null);
     const [liveSystem, setLiveSystem] = useState<Live>({

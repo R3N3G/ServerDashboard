@@ -17,7 +17,7 @@ type Webpage struct {
 }
 
 func (wp *Webpage) setEnvironmentVariables() {
-	siteUrl, ok := os.LookupEnv("REACT_APP_SITE_URL")
+	siteUrl, ok := os.LookupEnv("SITE_URL")
 	if !ok {
 		siteUrl = "http://localhost:3000"
 	}

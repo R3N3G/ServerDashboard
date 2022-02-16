@@ -7,9 +7,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        - REACT_APP_SITE_URL=https://sys.tp.unjx.de
     environment:
       - GIN_MODE=release
+      - SITE_URL=https://sys.tp.unjx.de
     ports:
       - "127.0.0.1:4000:4000"

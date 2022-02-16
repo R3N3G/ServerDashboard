@@ -1,6 +1,4 @@
 FROM node:17-alpine AS client
-ARG REACT_APP_SITE_URL
-ENV REACT_APP_SITE_URL $REACT_APP_SITE_URL
 WORKDIR /client
 COPY ./client .
 RUN npm install --silent
@@ -14,8 +12,6 @@ RUN go mod verify
 RUN go build -o app
 
 FROM alpine AS final
-ARG REACT_APP_SITE_URL
-ENV REACT_APP_SITE_URL $REACT_APP_SITE_URL
 WORKDIR /app
 COPY --from=server /server/app .
 COPY --from=client /client/build/index.html ./templates/index.html
