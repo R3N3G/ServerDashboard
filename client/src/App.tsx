@@ -1,5 +1,5 @@
 import React from 'react';
-import './App.css';
+import './customStyle.css';
 import System from "./components/System";
 import {APP_SITE_URL} from "./config";
 
