@@ -21,6 +21,7 @@ services:
   dashboard:
     image: florianhoss/serverdashboard:latest
     container_name: dashboard
+    hostname: server01
     restart: unless-stopped
     environment:
       - GIN_MODE=release
