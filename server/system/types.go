@@ -21,7 +21,6 @@ type Values struct {
 type Extras struct {
 	OperatingSystem       string `json:"operating_system"`
 	ProcessorArchitecture string `json:"processor_architecture"`
-	GoVersion             string `json:"go_version"`
 	CoreCount             int32  `json:"core_count"`
 }
 

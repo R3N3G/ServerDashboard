@@ -18,7 +18,7 @@ const System = () => {
         values: {disk: "", ram: ""}
     })
     const [staticSystem, setStaticSystem] = useState<Static>({
-        extras: {go_version: "", operating_system: "", processor_architecture: ""},
+        extras: {core_count: 0, operating_system: "", processor_architecture: ""},
         values: {cpu: "", disk: "", ram: ""}
     })
     const [systemCpu] = useState<SystemType>({

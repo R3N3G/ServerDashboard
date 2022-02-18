@@ -15,7 +15,7 @@ export interface Live {
 export interface Extras {
     operating_system: string,
     processor_architecture: string,
-    go_version: string,
+    core_count: number,
 }
 
 export interface Static {

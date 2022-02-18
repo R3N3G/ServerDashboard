@@ -31,7 +31,6 @@ func (wp *Webpage) routeStaticStruct(c *gin.Context) {
 	extras := system.Extras{
 		OperatingSystem:       system.GetSystemOs(),
 		ProcessorArchitecture: runtime.GOARCH,
-		GoVersion:             runtime.Version(),
 		CoreCount:             coreCount,
 	}
 	values := system.Values{

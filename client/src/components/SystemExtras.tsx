@@ -5,10 +5,12 @@ import {IconDefinition} from "@fortawesome/fontawesome-svg-core";
 
 const SystemExtras: FC<Props> = ({systemType, icon}) => {
     return (
-        <div className={"d-flex align-items-center justify-content-center"}>
-            <FontAwesomeIcon icon={icon} size="2x"/>
-            <div className={"ms-3 fw-bold"}>{systemType.operating_system}</div>
-            <div className={"ms-2"}>{systemType.processor_architecture} {systemType.go_version}</div>
+        <div className="d-flex align-items-center justify-content-center">
+            <FontAwesomeIcon icon={icon} size="3x"/>
+            <div className="ms-3 d-flex flex-column align-items-start">
+                <div className="fw-bold">{systemType.operating_system}</div>
+                <div>Architecture: {systemType.processor_architecture}</div>
+            </div>
         </div>
     );
 }
