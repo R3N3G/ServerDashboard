@@ -5,9 +5,10 @@ import {faHardDrive, faMemory, faMicrochip, faServer} from "@fortawesome/free-so
 import SystemLive from "./SystemLive";
 import SystemExtras from "./SystemExtras";
 import CardSmall from "./CardSmall";
+import CardBig from "./CardBig";
 
 const System = () => {
-    const origin = process.env.NODE_ENV == "development" ? "http://localhost:4000" : window.origin;
+    const origin = process.env.NODE_ENV === "development" ? "http://localhost:4000" : window.origin;
     const webSocketUrl = origin.replace('http', 'ws') + '/system/ws/';
     const staticSystemUrl = origin + '/system/static/';
 
@@ -21,19 +22,16 @@ const System = () => {
         values: {cpu: "", disk: "", ram: ""}
     })
     const [systemCpu] = useState<SystemType>({
-        color: "danger",
+        color: "primary",
         icon: faMicrochip,
-        name: "CPU",
     });
     const [systemRam] = useState<SystemType>({
-        color: "warning",
+        color: "secondary",
         icon: faMemory,
-        name: "Memory",
     });
     const [systemDisk] = useState<SystemType>({
-        color: "info",
+        color: "success",
         icon: faHardDrive,
-        name: "Disk",
     });
 
     const initWebsocket = useCallback(() => {
@@ -69,13 +67,11 @@ const System = () => {
 
     return (
         <div className={"row vh-100 align-items-center text-center"}>
-            <div className={"row g-3 m-0"}>
-                <CardSmall element={
+            <div className={"row g-3 m-0 justify-content-center"}>
+                <CardBig element={
                     <SystemExtras
                         systemType={staticSystem.extras}
                         icon={faServer}
-                        name={"System"}
-                        color={"primary"}
                     />}
                 />
                 <CardSmall element={
@@ -104,10 +100,6 @@ const System = () => {
             </div>
         </div>
     );
-}
-
-interface Props {
-    serverUrl: string;
 }
 
 export default System;

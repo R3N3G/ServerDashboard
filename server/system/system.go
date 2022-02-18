@@ -42,7 +42,7 @@ func StaticRam() string {
 	if err != nil {
 		return "0 Megabyte"
 	}
-	return fmt.Sprintf("%.0f Megabyte", float64(result.Total)/1000000)
+	return fmt.Sprintf("%.0f MB", float64(result.Total)/1000000)
 }
 
 func StaticDisk() string {
@@ -50,7 +50,7 @@ func StaticDisk() string {
 	if err != nil {
 		return "0 Gigabyte"
 	}
-	return fmt.Sprintf("%.0f Gigabyte", float64(result.Total)/1000000000)
+	return fmt.Sprintf("%.0f GB", float64(result.Total)/1000000000)
 }
 
 func LiveCpu() float64 {

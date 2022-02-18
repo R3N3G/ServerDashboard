@@ -28,7 +28,6 @@ export interface Static {
 }
 
 export interface SystemType {
-    name: string
     color: 'success' | 'danger' | 'warning' | 'info' | string;
     icon: IconDefinition
 }

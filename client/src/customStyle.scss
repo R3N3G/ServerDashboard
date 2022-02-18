@@ -1,8 +1,43 @@
-$body-bg: #1d1d1d;
+@import "../node_modules/bootstrap/scss/functions";
 
-$card-bg: #212529;
-$card-color: white;
-$border-width: 0;
+$primary: #3993cb;
+$secondary: #C5313193;
+$success: #529847;
+$body-color: #383838;
+
+$container-max-widths: (
+        sm: 540px,
+        md: 540px,
+        lg: 960px,
+        xl: 1140px,
+        xxl: 1320px
+);
+
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/mixins";
+
+.dark {
+  $theme-colors: (
+          "white": #2e323e
+  );
+
+  /* redefine theme color variables */
+  @each $color, $value in $theme-colors {
+    --#{$variable-prefix}#{$color}: #{$value};
+  }
+
+  /* redefine theme color rgb vars (used for bg- colors) */
+  $theme-colors-rgb: map-loop($theme-colors, to-rgb, "$value");
+  @each $color, $value in $theme-colors-rgb {
+    --#{$variable-prefix}#{$color}-rgb: #{$value};
+  }
+
+  --#{$variable-prefix}body-color: white;
+  --#{$variable-prefix}body-bg: #383c4a;
+}
+
+$card-border-width: 0;
 $border-radius: 1rem;
 
 @import "../node_modules/bootstrap/scss/bootstrap";
+
