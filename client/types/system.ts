@@ -13,11 +13,15 @@ export interface LiveInformation {
 
 export interface StaticInformation {
     processor: string,
+    total_cores: number,
+    total_threads: number,
     processor_architecture: string,
-    core_count: number,
     operating_system: string,
-    available_ram: string,
-    available_disk: string,
+    total_disk_string: string,
+    total_disk_number: number,
+    total_ram_string: string,
+    total_ram_number: number,
+    hostname: string,
 }
 
 export interface ExtraInformation {

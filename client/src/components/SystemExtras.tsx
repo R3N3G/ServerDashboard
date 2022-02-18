@@ -4,14 +4,15 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 const SystemExtras: FC<Props> = ({staticInformation, extraInformation}) => {
     return (
-        <div className="d-flex align-items-center justify-content-center">
-            <div className={"text-" + extraInformation.color}>
-                <FontAwesomeIcon icon={extraInformation.icon} size="4x"/>
+        <div className={"p-3 text-nowrap"}>
+            <div className={"mb-2 text-" + extraInformation.color}>
+                <FontAwesomeIcon icon={extraInformation.icon} size="2x"/>
             </div>
-            <div className="ms-3 d-flex flex-column align-items-start">
-                <div className={"fw-bold text-" + extraInformation.color}>{staticInformation.operating_system}</div>
+            <div className={"mb-2 fw-bold text-" + extraInformation.color}>{staticInformation.hostname}</div>
+            <div className="fw-bold mb-2 overflow-hidden overflow-ellipsis">
+                <div>OS: {staticInformation.operating_system}</div>
                 <div>Architecture: {staticInformation.processor_architecture}</div>
-                <div>Virtual Cores: {staticInformation.core_count}</div>
+                <div>Cores: {staticInformation.total_cores} Threads: {staticInformation.total_threads}</div>
             </div>
         </div>
     );

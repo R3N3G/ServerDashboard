@@ -3,7 +3,10 @@ package system
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/dariubs/percent"
 	"github.com/gorilla/websocket"
+	"github.com/jaypipes/ghw"
+	"github.com/jaypipes/ghw/pkg/unitutil"
 	"github.com/shirou/gopsutil/v3/cpu"
 	"github.com/shirou/gopsutil/v3/disk"
 	"github.com/shirou/gopsutil/v3/host"
@@ -12,12 +15,8 @@ import (
 	"time"
 )
 
-func GetSystemOs() string {
-	sysInfo, err := host.Info()
-	if err != nil {
-		return ""
-	}
-	switch sysInfo.OS {
+func ConvertOs(os string) string {
+	switch os {
 	case "darwin":
 		return "Apple MacOS"
 	case "linux":
@@ -29,39 +28,46 @@ func GetSystemOs() string {
 	}
 }
 
-func StaticCpu() (string, int32) {
-	result, err := cpu.Info()
-	if err != nil || result[0].ModelName == "" {
-		return "none detected", 1
+func GetHostInfo() (string, string) {
+	h, err := host.Info()
+	if err != nil {
+		return "", ""
 	}
-	return fmt.Sprintf("%s", result[0].ModelName), result[0].Cores
+	return ConvertOs(h.OS), h.Hostname
 }
 
-func StaticRam() string {
-	result, err := mem.VirtualMemory()
+func StaticCpu() (string, uint32, uint32) {
+	c, err := ghw.CPU()
 	if err != nil {
-		return "0 Megabyte"
+		return "", 0, 0
 	}
-	return fmt.Sprintf("%.2f GB", float64(result.Total)/1000000000)
-}
-
-func StaticDisk() string {
-	result, err := disk.Usage("/")
-	if err != nil {
-		return "0 Gigabyte"
-	}
-	return fmt.Sprintf("%.0f GB", float64(result.Total)/1000000000)
+	return c.Processors[0].Model, c.TotalCores, c.TotalThreads
 }
 
 func LiveCpu(staticSystem *StaticInformation) BasicInformation {
 	var result BasicInformation
-	percent, err := cpu.Percent(0, false)
+	p, err := cpu.Percent(0, false)
 	if err != nil {
 		return result
 	}
 	result.Value = staticSystem.Processor
-	result.Percentage = math.RoundToEven(percent[0])
+	result.Percentage = math.RoundToEven(p[0])
 	return result
+}
+
+func StaticRam() (string, float64) {
+	r, err := mem.VirtualMemory()
+	if err != nil {
+		return "", 0
+	}
+	var niceTotal float64 = 0
+	total := r.Total
+	if total <= 0 {
+		return "", 0
+	}
+	unit, unitStr := unitutil.AmountString(int64(total))
+	niceTotal = float64(total) / float64(unit)
+	return fmt.Sprintf("%.2f %s", niceTotal, unitStr), niceTotal
 }
 
 func LiveRam(staticSystem *StaticInformation) BasicInformation {
@@ -70,19 +76,58 @@ func LiveRam(staticSystem *StaticInformation) BasicInformation {
 	if err != nil {
 		return result
 	}
-	result.Value = fmt.Sprintf("%.1f / %s", float64(r.Used)/1000000000, staticSystem.AvailableRam)
-	result.Percentage = math.RoundToEven(r.UsedPercent)
+	var niceUsage float64 = 0
+	used := r.Used
+	if used > 0 {
+		unit, _ := unitutil.AmountString(int64(used))
+		niceUsage = float64(used) / float64(unit)
+		result.Value = fmt.Sprintf("%.2f / %s", niceUsage, staticSystem.TotalRamString)
+		result.Percentage = math.RoundToEven(percent.PercentOfFloat(niceUsage, staticSystem.TotalRamNumber))
+	}
 	return result
+}
+
+func StaticDisk() (string, float64) {
+	partitions, err := disk.Partitions(false)
+	if err != nil {
+		return "", 0
+	}
+	var total uint64 = 0
+	var niceTotal float64 = 0
+	for _, partition := range partitions {
+		d, err := disk.Usage(partition.Mountpoint)
+		if err == nil {
+			total += d.Total
+		}
+	}
+	if total <= 0 {
+		return "", 0
+	}
+	unit, unitStr := unitutil.AmountString(int64(total))
+	niceTotal = float64(total) / float64(unit)
+	return fmt.Sprintf("%.2f %s", niceTotal, unitStr), niceTotal
 }
 
 func LiveDisk(staticSystem *StaticInformation) BasicInformation {
 	var result BasicInformation
-	d, err := disk.Usage("/")
+	partitions, err := disk.Partitions(false)
 	if err != nil {
 		return result
 	}
-	result.Value = fmt.Sprintf("%.0f / %s", float64(d.Used)/1000000000, staticSystem.AvailableDisk)
-	result.Percentage = math.RoundToEven(d.UsedPercent)
+	var usage uint64 = 0
+	var niceUsage float64 = 0
+	for _, partition := range partitions {
+		d, err := disk.Usage(partition.Mountpoint)
+		if err == nil {
+			usage += d.Used
+		}
+	}
+	if usage > 0 {
+		unit, _ := unitutil.AmountString(int64(usage))
+		niceUsage = float64(usage) / float64(unit)
+		result.Value = fmt.Sprintf("%.2f / %s", niceUsage, staticSystem.TotalDiskString)
+		result.Percentage = math.RoundToEven(percent.PercentOfFloat(niceUsage, staticSystem.TotalDiskNumber))
+	}
 	return result
 }
 
