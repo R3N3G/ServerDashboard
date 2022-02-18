@@ -6,11 +6,11 @@ import {ProgressBar} from "react-bootstrap";
 const SystemLive: FC<Props> = ({systemType, percentage, staticValue, liveValue}) => {
     return (
         <div>
-            <div className={"p-2"}>
+            <div className={"py-2 px-3 text-nowrap"}>
                 <div className={"mb-2 text-" + systemType.color}>
                     <FontAwesomeIcon icon={systemType.icon} size="2x"/>
                 </div>
-                <div className={"fw-bold mb-2"}>
+                <div className="fw-bold mb-2 overflow-hidden overflow-ellipsis">
                     {liveValue && <span className={"mb-2 text-" + systemType.color}>{liveValue}</span>}
                     {liveValue && <span> / </span>}
                     {staticValue}
