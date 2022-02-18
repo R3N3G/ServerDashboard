@@ -6,7 +6,7 @@ import {ProgressBar} from "react-bootstrap";
 const SystemLive: FC<Props> = ({basicInformation, extraInformation}) => {
     return (
         <div>
-            <div className={"py-2 px-3 text-nowrap"}>
+            <div className={"p-3 text-nowrap"}>
                 <div className={"mb-2 text-" + extraInformation.color}>
                     <FontAwesomeIcon icon={extraInformation.icon} size="2x"/>
                 </div>
