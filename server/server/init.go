@@ -39,8 +39,8 @@ func (wp *Webpage) serveStatic(staticFolders []string) {
 func (wp *Webpage) initStaticSystem() {
 	os, hostname := system.GetHostInfo()
 	processor, totalCores, totalThreads := system.StaticCpu()
-	totalDiskString, totalDiskNumber := system.StaticDisk()
-	totalRamString, totalRamNumber := system.StaticRam()
+	totalDiskString, totalDiskNumber, diskUnit := system.StaticDisk()
+	totalRamString, totalRamNumber, ramUnit := system.StaticRam()
 	wp.StaticSystem = system.StaticInformation{
 		Processor:             processor,
 		TotalCores:            totalCores,
@@ -49,8 +49,10 @@ func (wp *Webpage) initStaticSystem() {
 		OperatingSystem:       os,
 		TotalDiskNumber:       totalDiskNumber,
 		TotalDiskString:       totalDiskString,
+		DiskUnit:              diskUnit,
 		TotalRamNumber:        totalRamNumber,
 		TotalRamString:        totalRamString,
+		RamUnit:               ramUnit,
 		Hostname:              hostname,
 	}
 }
