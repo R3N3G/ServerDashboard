@@ -5,15 +5,14 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"runtime"
 )
 
 func (wp *Webpage) defineRoutes() {
 	wp.Router.GET("/", wp.routeHome)
 	routeSystem := wp.Router.Group("/system")
 	{
-		routeSystem.GET("/static/", wp.routeStaticStruct)
-		routeSystem.GET("/ws/", wp.routeWebSocketSystem)
+		routeSystem.GET("/static/", wp.routeStaticSystem)
+		routeSystem.GET("/ws/", wp.routeLiveSystem)
 	}
 	wp.Router.NoRoute(wp.noRoute)
 }
@@ -26,30 +25,15 @@ func (wp *Webpage) noRoute(c *gin.Context) {
 	c.Redirect(http.StatusTemporaryRedirect, "/")
 }
 
-func (wp *Webpage) routeStaticStruct(c *gin.Context) {
-	cpuName, coreCount := system.StaticCpu()
-	extras := system.Extras{
-		OperatingSystem:       system.GetSystemOs(),
-		ProcessorArchitecture: runtime.GOARCH,
-		CoreCount:             coreCount,
-	}
-	values := system.Values{
-		CPU:  cpuName,
-		RAM:  system.StaticRam(),
-		Disk: system.StaticDisk(),
-	}
-	var result = system.Static{
-		Values: values,
-		Extras: extras,
-	}
-	c.JSON(200, result)
+func (wp *Webpage) routeStaticSystem(c *gin.Context) {
+	c.JSON(200, wp.StaticSystem)
 }
 
-func (wp *Webpage) routeWebSocketSystem(c *gin.Context) {
+func (wp *Webpage) routeLiveSystem(c *gin.Context) {
 	conn, _ := wp.WsUpgrade.Upgrade(c.Writer, c.Request, nil)
 	c.Request.Header.Set("Access-Control-Allow-Origin", "*")
 	defer conn.Close()
-	go system.GetLiveSystem(conn)
+	go system.GetLiveSystem(conn, &wp.StaticSystem)
 	for {
 		_, message, err := conn.ReadMessage()
 		if err != nil {

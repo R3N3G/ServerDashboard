@@ -1,30 +1,21 @@
 package system
 
-type Live struct {
-	Values struct {
-		RAM  string `json:"ram"`
-		Disk string `json:"disk"`
-	} `json:"values"`
-	Percentage struct {
-		CPU  float64 `json:"cpu"`
-		RAM  float64 `json:"ram"`
-		Disk float64 `json:"disk"`
-	} `json:"percentage"`
+type BasicInformation struct {
+	Value      string  `json:"value"`
+	Percentage float64 `json:"percentage"`
 }
 
-type Values struct {
-	CPU  string `json:"cpu"`
-	RAM  string `json:"ram"`
-	Disk string `json:"disk"`
+type LiveInformation struct {
+	CPU  BasicInformation `json:"cpu"`
+	RAM  BasicInformation `json:"ram"`
+	Disk BasicInformation `json:"disk"`
 }
 
-type Extras struct {
-	OperatingSystem       string `json:"operating_system"`
+type StaticInformation struct {
+	Processor             string `json:"processor"`
 	ProcessorArchitecture string `json:"processor_architecture"`
 	CoreCount             int32  `json:"core_count"`
-}
-
-type Static struct {
-	Values `json:"values"`
-	Extras `json:"extras"`
+	OperatingSystem       string `json:"operating_system"`
+	AvailableRam          string `json:"available_ram"`
+	AvailableDisk         string `json:"available_disk"`
 }

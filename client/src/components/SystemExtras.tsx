@@ -1,23 +1,25 @@
 import React, {FC} from "react";
-import {Extras} from "../../types/system";
+import {ExtraInformation, StaticInformation} from "../../types/system";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {IconDefinition} from "@fortawesome/fontawesome-svg-core";
 
-const SystemExtras: FC<Props> = ({systemType, icon}) => {
+const SystemExtras: FC<Props> = ({staticInformation, extraInformation}) => {
     return (
         <div className="d-flex align-items-center justify-content-center">
-            <FontAwesomeIcon icon={icon} size="3x"/>
+            <div className={"text-" + extraInformation.color}>
+                <FontAwesomeIcon icon={extraInformation.icon} size="4x"/>
+            </div>
             <div className="ms-3 d-flex flex-column align-items-start">
-                <div className="fw-bold">{systemType.operating_system}</div>
-                <div>Architecture: {systemType.processor_architecture}</div>
+                <div className={"fw-bold text-" + extraInformation.color}>{staticInformation.operating_system}</div>
+                <div>Architecture: {staticInformation.processor_architecture}</div>
+                <div>Virtual Cores: {staticInformation.core_count}</div>
             </div>
         </div>
     );
 }
 
 interface Props {
-    systemType: Extras;
-    icon: IconDefinition;
+    staticInformation: StaticInformation;
+    extraInformation: ExtraInformation;
 }
 
 export default SystemExtras;

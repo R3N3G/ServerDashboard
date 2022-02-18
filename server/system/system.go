@@ -42,7 +42,7 @@ func StaticRam() string {
 	if err != nil {
 		return "0 Megabyte"
 	}
-	return fmt.Sprintf("%.0f MB", float64(result.Total)/1000000)
+	return fmt.Sprintf("%.2f GB", float64(result.Total)/1000000000)
 }
 
 func StaticDisk() string {
@@ -53,36 +53,45 @@ func StaticDisk() string {
 	return fmt.Sprintf("%.0f GB", float64(result.Total)/1000000000)
 }
 
-func LiveCpu() float64 {
-	resultPercent, err := cpu.Percent(0, false)
+func LiveCpu(staticSystem *StaticInformation) BasicInformation {
+	var result BasicInformation
+	percent, err := cpu.Percent(0, false)
 	if err != nil {
-		return 0
+		return result
 	}
-	return math.RoundToEven(resultPercent[0])
+	result.Value = staticSystem.Processor
+	result.Percentage = math.RoundToEven(percent[0])
+	return result
 }
 
-func LiveRam() (float64, string) {
-	result, err := mem.VirtualMemory()
+func LiveRam(staticSystem *StaticInformation) BasicInformation {
+	var result BasicInformation
+	r, err := mem.VirtualMemory()
 	if err != nil {
-		return 0, "0"
+		return result
 	}
-	return math.RoundToEven(result.UsedPercent), fmt.Sprintf("%.0f", float64(result.Used)/1000000)
+	result.Value = fmt.Sprintf("%.1f / %s", float64(r.Used)/1000000000, staticSystem.AvailableRam)
+	result.Percentage = math.RoundToEven(r.UsedPercent)
+	return result
 }
 
-func LiveDisk() (float64, string) {
-	result, err := disk.Usage("/")
+func LiveDisk(staticSystem *StaticInformation) BasicInformation {
+	var result BasicInformation
+	d, err := disk.Usage("/")
 	if err != nil {
-		return 0, "0"
+		return result
 	}
-	return math.RoundToEven(result.UsedPercent), fmt.Sprintf("%.0f", float64(result.Used)/1000000000)
+	result.Value = fmt.Sprintf("%.0f / %s", float64(d.Used)/1000000000, staticSystem.AvailableDisk)
+	result.Percentage = math.RoundToEven(d.UsedPercent)
+	return result
 }
 
-func GetLiveSystem(conn *websocket.Conn) {
-	var result Live
+func GetLiveSystem(conn *websocket.Conn, staticSystem *StaticInformation) {
+	var result LiveInformation
 	for {
-		result.Percentage.CPU = LiveCpu()
-		result.Percentage.RAM, result.Values.RAM = LiveRam()
-		result.Percentage.Disk, result.Values.Disk = LiveDisk()
+		result.CPU = LiveCpu(staticSystem)
+		result.RAM = LiveRam(staticSystem)
+		result.Disk = LiveDisk(staticSystem)
 
 		send, _ := json.Marshal(result)
 		err := conn.WriteMessage(websocket.TextMessage, send)

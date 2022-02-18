@@ -1,18 +1,21 @@
 package server
 
 import (
+	"code.unjx.de/systemo/system"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 	"net/http"
+	"runtime"
 )
 
 type Webpage struct {
-	Router    *gin.Engine
-	Websocket *websocket.Conn
-	WsUpgrade websocket.Upgrader
-	SiteUrl   string
+	Router       *gin.Engine
+	Websocket    *websocket.Conn
+	WsUpgrade    websocket.Upgrader
+	SiteUrl      string
+	StaticSystem system.StaticInformation
 }
 
 func (wp *Webpage) setMiddlewares() {
@@ -33,6 +36,18 @@ func (wp *Webpage) serveStatic(staticFolders []string) {
 	}
 }
 
+func (wp *Webpage) initStaticSystem() {
+	name, coreCount := system.StaticCpu()
+	wp.StaticSystem = system.StaticInformation{
+		Processor:             name,
+		ProcessorArchitecture: runtime.GOARCH,
+		CoreCount:             coreCount,
+		OperatingSystem:       system.GetSystemOs(),
+		AvailableRam:          system.StaticRam(),
+		AvailableDisk:         system.StaticDisk(),
+	}
+}
+
 func SetupServer() *gin.Engine {
 	wp := Webpage{
 		Router: gin.New(),
@@ -48,6 +63,7 @@ func SetupServer() *gin.Engine {
 		"static",
 		"favicon",
 	})
+	wp.initStaticSystem()
 	wp.defineRoutes()
 	return wp.Router
 }
