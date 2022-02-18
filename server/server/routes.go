@@ -27,25 +27,21 @@ func (wp *Webpage) noRoute(c *gin.Context) {
 }
 
 func (wp *Webpage) routeStaticStruct(c *gin.Context) {
+	cpuName, coreCount := system.StaticCpu()
+	extras := system.Extras{
+		OperatingSystem:       system.GetSystemOs(),
+		ProcessorArchitecture: runtime.GOARCH,
+		GoVersion:             runtime.Version(),
+		CoreCount:             coreCount,
+	}
+	values := system.Values{
+		CPU:  cpuName,
+		RAM:  system.StaticRam(),
+		Disk: system.StaticDisk(),
+	}
 	var result = system.Static{
-		Values: struct {
-			CPU  string `json:"cpu"`
-			RAM  string `json:"ram"`
-			Disk string `json:"disk"`
-		}{
-			CPU:  system.StaticCpu(),
-			RAM:  system.StaticRam(),
-			Disk: system.StaticDisk(),
-		},
-		Extras: struct {
-			OperatingSystem       string `json:"operating_system"`
-			ProcessorArchitecture string `json:"processor_architecture"`
-			GoVersion             string `json:"go_version"`
-		}{
-			OperatingSystem:       system.GetSystemOs(),
-			ProcessorArchitecture: runtime.GOARCH,
-			GoVersion:             runtime.Version(),
-		},
+		Values: values,
+		Extras: extras,
 	}
 	c.JSON(200, result)
 }

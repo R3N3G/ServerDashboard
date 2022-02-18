@@ -29,12 +29,12 @@ func GetSystemOs() string {
 	}
 }
 
-func StaticCpu() string {
+func StaticCpu() (string, int32) {
 	result, err := cpu.Info()
 	if err != nil || result[0].ModelName == "" {
-		return "none detected"
+		return "none detected", 1
 	}
-	return fmt.Sprintf("%s", result[0].ModelName)
+	return fmt.Sprintf("%s", result[0].ModelName), result[0].Cores
 }
 
 func StaticRam() string {

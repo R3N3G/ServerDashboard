@@ -12,15 +12,20 @@ type Live struct {
 	} `json:"percentage"`
 }
 
+type Values struct {
+	CPU  string `json:"cpu"`
+	RAM  string `json:"ram"`
+	Disk string `json:"disk"`
+}
+
+type Extras struct {
+	OperatingSystem       string `json:"operating_system"`
+	ProcessorArchitecture string `json:"processor_architecture"`
+	GoVersion             string `json:"go_version"`
+	CoreCount             int32  `json:"core_count"`
+}
+
 type Static struct {
-	Values struct {
-		CPU  string `json:"cpu"`
-		RAM  string `json:"ram"`
-		Disk string `json:"disk"`
-	} `json:"values"`
-	Extras struct {
-		OperatingSystem       string `json:"operating_system"`
-		ProcessorArchitecture string `json:"processor_architecture"`
-		GoVersion             string `json:"go_version"`
-	} `json:"extras"`
+	Values `json:"values"`
+	Extras `json:"extras"`
 }
