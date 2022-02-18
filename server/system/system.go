@@ -3,13 +3,15 @@ package system
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/dariubs/percent"
 	"github.com/gorilla/websocket"
+	"github.com/jaypipes/ghw"
+	"github.com/jaypipes/ghw/pkg/unitutil"
 	"github.com/shirou/gopsutil/v3/cpu"
 	"github.com/shirou/gopsutil/v3/disk"
 	"github.com/shirou/gopsutil/v3/host"
 	"github.com/shirou/gopsutil/v3/mem"
 	"math"
-	"strings"
 	"time"
 )
 
@@ -31,32 +33,25 @@ func GetHostInfo() (string, string) {
 	if err != nil {
 		return "", ""
 	}
-	return fmt.Sprintf("%s (%s)", ConvertOs(h.OS), h.PlatformVersion), strings.ToUpper(h.Hostname)
+	return ConvertOs(h.OS), h.Hostname
 }
 
-func StaticCpu() string {
-	c, err := cpu.Info()
-	fmt.Println(c[0].Mhz)
-	if err != nil || c[0].ModelName == "" {
-		return "none detected"
+func StaticCpu() (string, uint32, uint32) {
+	c, err := ghw.CPU()
+	if err != nil {
+		return "", 0, 0
 	}
-	return fmt.Sprintf("%s", c[0].ModelName)
+	return c.Processors[0].Model, c.TotalCores, c.TotalThreads
 }
 
 func StaticRam() string {
-	result, err := mem.VirtualMemory()
-	if err != nil {
-		return "0 Megabyte"
+	m, err := ghw.Memory()
+	if err != nil || m.TotalPhysicalBytes <= 0 {
+		return ""
 	}
-	return fmt.Sprintf("%.2f GB", float64(result.Total)/1000000000)
-}
-
-func StaticDisk() string {
-	result, err := disk.Usage("/")
-	if err != nil {
-		return "0 Gigabyte"
-	}
-	return fmt.Sprintf("%.0f GB", float64(result.Total)/1000000000)
+	tpb := m.TotalPhysicalBytes
+	unit, unitStr := unitutil.AmountString(tpb)
+	return fmt.Sprintf("%.2f%s", float64(tpb)/float64(unit), unitStr)
 }
 
 func LiveCpu(staticSystem *StaticInformation) BasicInformation {
@@ -76,19 +71,41 @@ func LiveRam(staticSystem *StaticInformation) BasicInformation {
 	if err != nil {
 		return result
 	}
-	result.Value = fmt.Sprintf("%.2f / %s", float64(r.Used)/1000000000, staticSystem.AvailableRam)
+	tpb := r.Used
+	unit, _ := unitutil.AmountString(int64(tpb))
+	result.Value = fmt.Sprintf("%.2f / %s", float64(tpb)/float64(unit), staticSystem.AvailableRam)
 	result.Percentage = math.RoundToEven(r.UsedPercent)
 	return result
 }
 
-func LiveDisk(staticSystem *StaticInformation) BasicInformation {
+func LiveDisk() BasicInformation {
 	var result BasicInformation
-	d, err := disk.Usage("/")
+	partitions, err := disk.Partitions(false)
 	if err != nil {
 		return result
 	}
-	result.Value = fmt.Sprintf("%.0f / %s", float64(d.Used)/1000000000, staticSystem.AvailableDisk)
-	result.Percentage = math.RoundToEven(d.UsedPercent)
+	var usage uint64 = 0
+	var total uint64 = 0
+	var niceUsage float64 = 0
+	var niceTotal float64 = 0
+	for _, partition := range partitions {
+		d, err := disk.Usage(partition.Mountpoint)
+		if err == nil {
+			usage += d.Used
+			total += d.Total
+		}
+	}
+	if usage > 0 {
+		unit, _ := unitutil.AmountString(int64(usage))
+		niceUsage = float64(usage) / float64(unit)
+		result.Value = fmt.Sprintf("%.2f", niceUsage)
+	}
+	if total > 0 {
+		unit, unitStr := unitutil.AmountString(int64(total))
+		niceTotal = float64(total) / float64(unit)
+		result.Value += fmt.Sprintf("/ %.2f %s", niceTotal, unitStr)
+		result.Percentage = math.RoundToEven(percent.PercentOfFloat(niceUsage, niceTotal))
+	}
 	return result
 }
 
@@ -97,7 +114,7 @@ func GetLiveSystem(conn *websocket.Conn, staticSystem *StaticInformation) {
 	for {
 		result.CPU = LiveCpu(staticSystem)
 		result.RAM = LiveRam(staticSystem)
-		result.Disk = LiveDisk(staticSystem)
+		result.Disk = LiveDisk()
 
 		send, _ := json.Marshal(result)
 		err := conn.WriteMessage(websocket.TextMessage, send)

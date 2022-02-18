@@ -13,10 +13,10 @@ type LiveInformation struct {
 
 type StaticInformation struct {
 	Processor             string `json:"processor"`
+	TotalCores            uint32 `json:"total_cores"`
+	TotalThreads          uint32 `json:"total_threads"`
 	ProcessorArchitecture string `json:"processor_architecture"`
-	CoreCount             int    `json:"core_count"`
 	OperatingSystem       string `json:"operating_system"`
 	AvailableRam          string `json:"available_ram"`
-	AvailableDisk         string `json:"available_disk"`
 	Hostname              string `json:"hostname"`
 }
