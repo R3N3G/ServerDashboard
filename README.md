@@ -1,6 +1,12 @@
 # Server Dashboard
 
-![screenshot](images/screenshot.png)
+## Dark Mode
+
+![screenshot](images/screenshot_dark.png)
+
+## Light Mode
+
+![screenshot](images/screenshot_light.png)
 
 written in Go and React
 
