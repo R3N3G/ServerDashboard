@@ -9,15 +9,12 @@ import (
 	"github.com/shirou/gopsutil/v3/host"
 	"github.com/shirou/gopsutil/v3/mem"
 	"math"
+	"strings"
 	"time"
 )
 
-func GetSystemOs() string {
-	sysInfo, err := host.Info()
-	if err != nil {
-		return ""
-	}
-	switch sysInfo.OS {
+func ConvertOs(os string) string {
+	switch os {
 	case "darwin":
 		return "Apple MacOS"
 	case "linux":
@@ -29,12 +26,21 @@ func GetSystemOs() string {
 	}
 }
 
-func StaticCpu() (string, int32) {
-	result, err := cpu.Info()
-	if err != nil || result[0].ModelName == "" {
-		return "none detected", 1
+func GetHostInfo() (string, string) {
+	h, err := host.Info()
+	if err != nil {
+		return "", ""
 	}
-	return fmt.Sprintf("%s", result[0].ModelName), result[0].Cores
+	return fmt.Sprintf("%s (%s)", ConvertOs(h.OS), h.PlatformVersion), strings.ToUpper(h.Hostname)
+}
+
+func StaticCpu() string {
+	c, err := cpu.Info()
+	fmt.Println(c[0].Mhz)
+	if err != nil || c[0].ModelName == "" {
+		return "none detected"
+	}
+	return fmt.Sprintf("%s", c[0].ModelName)
 }
 
 func StaticRam() string {
@@ -70,7 +76,7 @@ func LiveRam(staticSystem *StaticInformation) BasicInformation {
 	if err != nil {
 		return result
 	}
-	result.Value = fmt.Sprintf("%.1f / %s", float64(r.Used)/1000000000, staticSystem.AvailableRam)
+	result.Value = fmt.Sprintf("%.2f / %s", float64(r.Used)/1000000000, staticSystem.AvailableRam)
 	result.Percentage = math.RoundToEven(r.UsedPercent)
 	return result
 }

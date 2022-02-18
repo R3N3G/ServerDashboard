@@ -2,10 +2,12 @@ package server
 
 import (
 	"code.unjx.de/systemo/system"
+	"fmt"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
+	"github.com/jaypipes/ghw"
 	"net/http"
 	"runtime"
 )
@@ -37,14 +39,20 @@ func (wp *Webpage) serveStatic(staticFolders []string) {
 }
 
 func (wp *Webpage) initStaticSystem() {
-	name, coreCount := system.StaticCpu()
+	memory, err := ghw.Memory()
+	if err != nil {
+		fmt.Printf("Error getting memory info: %v", err)
+	}
+	fmt.Println(memory.String())
+	os, hostname := system.GetHostInfo()
 	wp.StaticSystem = system.StaticInformation{
-		Processor:             name,
+		Processor:             system.StaticCpu(),
 		ProcessorArchitecture: runtime.GOARCH,
-		CoreCount:             coreCount,
-		OperatingSystem:       system.GetSystemOs(),
+		CoreCount:             runtime.NumCPU(),
+		OperatingSystem:       os,
 		AvailableRam:          system.StaticRam(),
 		AvailableDisk:         system.StaticDisk(),
+		Hostname:              hostname,
 	}
 }
 

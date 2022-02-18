@@ -14,8 +14,9 @@ type LiveInformation struct {
 type StaticInformation struct {
 	Processor             string `json:"processor"`
 	ProcessorArchitecture string `json:"processor_architecture"`
-	CoreCount             int32  `json:"core_count"`
+	CoreCount             int    `json:"core_count"`
 	OperatingSystem       string `json:"operating_system"`
 	AvailableRam          string `json:"available_ram"`
 	AvailableDisk         string `json:"available_disk"`
+	Hostname              string `json:"hostname"`
 }
