@@ -2,5 +2,7 @@ $body-bg: #1d1d1d;
 
 $card-bg: #212529;
 $card-color: white;
+$border-width: 0;
+$border-radius: 1rem;
 
 @import "../node_modules/bootstrap/scss/bootstrap";

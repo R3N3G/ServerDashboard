@@ -2,8 +2,9 @@ import React, {useCallback, useEffect, useRef, useState} from "react";
 import {Live, Static, SystemType} from "../../types/system";
 import axios from "axios";
 import {faHardDrive, faMemory, faMicrochip, faServer} from "@fortawesome/free-solid-svg-icons";
-import LiveComponent from "./LiveComponent";
-import ExtrasComponent from "./ExtrasComponent";
+import SystemLive from "./SystemLive";
+import SystemExtras from "./SystemExtras";
+import CardSmall from "./CardSmall";
 
 const System = () => {
     const origin = process.env.NODE_ENV == "development" ? "http://localhost:4000" : window.origin;
@@ -69,28 +70,36 @@ const System = () => {
     return (
         <div className={"row vh-100 align-items-center text-center"}>
             <div className={"row g-3 m-0"}>
-                <ExtrasComponent
-                    systemType={staticSystem.extras}
-                    icon={faServer}
-                    name={"System"}
-                    color={"primary"}
+                <CardSmall element={
+                    <SystemExtras
+                        systemType={staticSystem.extras}
+                        icon={faServer}
+                        name={"System"}
+                        color={"primary"}
+                    />}
                 />
-                <LiveComponent
-                    systemType={systemCpu}
-                    percentage={liveSystem.percentage.cpu}
-                    staticValue={staticSystem.values.cpu}
+                <CardSmall element={
+                    <SystemLive
+                        systemType={systemCpu}
+                        percentage={liveSystem.percentage.cpu}
+                        staticValue={staticSystem.values.cpu}
+                    />}
                 />
-                <LiveComponent
-                    systemType={systemRam}
-                    percentage={liveSystem.percentage.ram}
-                    liveValue={liveSystem.values.ram}
-                    staticValue={staticSystem.values.ram}
+                <CardSmall element={
+                    <SystemLive
+                        systemType={systemRam}
+                        percentage={liveSystem.percentage.ram}
+                        liveValue={liveSystem.values.ram}
+                        staticValue={staticSystem.values.ram}
+                    />}
                 />
-                <LiveComponent
-                    systemType={systemDisk}
-                    percentage={liveSystem.percentage.disk}
-                    liveValue={liveSystem.values.disk}
-                    staticValue={staticSystem.values.disk}
+                <CardSmall element={
+                    <SystemLive
+                        systemType={systemDisk}
+                        percentage={liveSystem.percentage.disk}
+                        liveValue={liveSystem.values.disk}
+                        staticValue={staticSystem.values.disk}
+                    />}
                 />
             </div>
         </div>
