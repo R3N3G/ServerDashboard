@@ -1,7 +1,7 @@
 FROM node:17-alpine AS client
 WORKDIR /client
 COPY ./client .
-RUN npm install --silent
+RUN npm install
 RUN npm run build
 
 FROM golang:alpine AS server

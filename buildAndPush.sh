@@ -1,3 +1,8 @@
 #!/bin/bash
 
-docker buildx build --push --platform linux/arm/v7,linux/arm64/v8,linux/amd64 --tag florianhoss/serverdashboard:latest .
+TAG=$1
+if [ "${TAG}" == "" ]; then
+  TAG=latest
+fi
+
+docker buildx build --push --platform linux/arm/v7,linux/arm64,linux/amd64 --tag florianhoss/serverdashboard:"${TAG}" .
