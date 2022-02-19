@@ -7,7 +7,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 	"net/http"
-	"runtime"
 )
 
 type Webpage struct {
@@ -36,24 +35,12 @@ func (wp *Webpage) serveStatic(staticFolders []string) {
 	}
 }
 
-func (wp *Webpage) initStaticSystem() {
-	os, hostname := system.GetHostInfo()
-	processor, totalCores, totalThreads := system.StaticCpu()
-	totalDiskString, totalDiskNumber, diskUnit := system.StaticDisk()
-	totalRamString, totalRamNumber, ramUnit := system.StaticRam()
+func (wp *Webpage) initStaticInformation() {
 	wp.StaticSystem = system.StaticInformation{
-		Processor:             processor,
-		TotalCores:            totalCores,
-		TotalThreads:          totalThreads,
-		ProcessorArchitecture: runtime.GOARCH,
-		OperatingSystem:       os,
-		TotalDiskNumber:       totalDiskNumber,
-		TotalDiskString:       totalDiskString,
-		DiskUnit:              diskUnit,
-		TotalRamNumber:        totalRamNumber,
-		TotalRamString:        totalRamString,
-		RamUnit:               ramUnit,
-		Hostname:              hostname,
+		Processor: system.GetCpuInfo(),
+		Host:      system.GetHostInfo(),
+		Memory:    system.GetMemoryInfo(),
+		Disk:      system.GetDiskInfo(),
 	}
 }
 
@@ -72,7 +59,7 @@ func SetupServer() *gin.Engine {
 		"static",
 		"favicon",
 	})
-	wp.initStaticSystem()
+	wp.initStaticInformation()
 	wp.defineRoutes()
 	return wp.Router
 }
