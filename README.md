@@ -23,7 +23,7 @@ services:
     container_name: dashboard
     restart: unless-stopped
     environment:
-      SERVER_NAME: "Server 01"
+      SERVER_NAME: "Mercedes"
       GIN_MODE: release
     ports:
       - "4000:4000"
