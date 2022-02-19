@@ -1,10 +1,12 @@
 import React, {FC} from "react";
 import {ExtraInformation, StaticInformation} from "../../types/system";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import DarkMode from "./darkMode";
 
 const SystemExtras: FC<Props> = ({staticInformation, extraInformation}) => {
     return (
-        <div className={"p-3 text-nowrap"}>
+        <div className={"p-3 text-nowrap position-relative"}>
+            <DarkMode/>
             <div className={"mb-2 text-" + extraInformation.color}>
                 <FontAwesomeIcon icon={extraInformation.icon} size="2x"/>
             </div>
