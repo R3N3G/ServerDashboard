@@ -11,17 +11,27 @@ type LiveInformation struct {
 	Disk BasicInformation `json:"disk"`
 }
 
+type Processor struct {
+	Name         string `json:"name"`
+	Cores        int    `json:"cores"`
+	Threads      int    `json:"threads"`
+	Architecture string `json:"architecture"`
+}
+
+type Host struct {
+	ServerName      string `json:"server_name"`
+	OperatingSystem string `json:"operating_system"`
+}
+
+type Storage struct {
+	Readable string  `json:"readable"`
+	Value    float64 `json:"value"`
+	Unit     float64 `json:"unit"`
+}
+
 type StaticInformation struct {
-	Processor             string  `json:"processor"`
-	TotalCores            int     `json:"total_cores"`
-	TotalThreads          int     `json:"total_threads"`
-	ProcessorArchitecture string  `json:"processor_architecture"`
-	OperatingSystem       string  `json:"operating_system"`
-	TotalDiskString       string  `json:"total_disk_string"`
-	TotalDiskNumber       float64 `json:"total_disk_number"`
-	DiskUnit              float64 `json:"disk_unit"`
-	TotalRamString        string  `json:"total_ram_string"`
-	TotalRamNumber        float64 `json:"total_ram_number"`
-	RamUnit               float64 `json:"ram_unit"`
-	Hostname              string  `json:"hostname"`
+	Processor Processor `json:"processor"`
+	Host      Host      `json:"host"`
+	Memory    Storage   `json:"ram"`
+	Disk      Storage   `json:"disk"`
 }

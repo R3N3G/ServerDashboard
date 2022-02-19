@@ -23,16 +23,10 @@ const System = () => {
         value: "", percentage: 0,
     })
     const [staticSystem, setStaticSystem] = useState<StaticInformation>({
-        hostname: "",
-        operating_system: "",
-        processor: "",
-        processor_architecture: "",
-        total_cores: 0,
-        total_disk_number: 0,
-        total_disk_string: "",
-        total_ram_number: 0,
-        total_ram_string: "",
-        total_threads: 0
+        disk: {readable: "", value: 0, unit: 0,},
+        host: {server_name: "", operating_system: "",},
+        memory: {readable: "", value: 0, unit: 0,},
+        processor: {name: "", cores: 0, threads: 0, architecture: "",}
     })
 
     const initWebsocket = useCallback(() => {

@@ -11,17 +11,29 @@ export interface LiveInformation {
     disk: BasicInformation,
 }
 
+export interface processor {
+    name: string,
+    cores: number,
+    threads: number,
+    architecture: string,
+}
+
+export interface host {
+    server_name: string
+    operating_system: string
+}
+
+export interface storage {
+    readable: string
+    value: number
+    unit: number
+}
+
 export interface StaticInformation {
-    processor: string,
-    total_cores: number,
-    total_threads: number,
-    processor_architecture: string,
-    operating_system: string,
-    total_disk_string: string,
-    total_disk_number: number,
-    total_ram_string: string,
-    total_ram_number: number,
-    hostname: string,
+    processor: processor
+    host: host
+    memory: storage
+    disk: storage
 }
 
 export interface ExtraInformation {
