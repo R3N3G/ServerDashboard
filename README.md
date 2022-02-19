@@ -21,10 +21,10 @@ services:
   dashboard:
     image: florianhoss/serverdashboard:latest
     container_name: dashboard
-    hostname: server01
     restart: unless-stopped
     environment:
-      - GIN_MODE=release
+      SERVER_NAME: "Server 01"
+      GIN_MODE: release
     ports:
       - "4000:4000"
 ```
