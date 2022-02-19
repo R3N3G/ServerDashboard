@@ -17,7 +17,7 @@ const DarkMode = () => {
     }, [isDark])
 
     useEffect(() => {
-        if (window.matchMedia("(prefers-color-scheme: dark)")) {
+        if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
             setIsDark(true)
         }
     }, [])
