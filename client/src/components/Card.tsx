@@ -1,8 +1,8 @@
 import {FC} from "react";
 
-const CardBig: FC<Props> = (props) => {
+const Card: FC<Props> = (props) => {
     return (
-        <div className={"col-12"}>
+        <div className={"col-lg-6 col-sm-12"}>
             <div className={`card rounded shadow bg-white`}>
                 <div className={"card-body p-0 m-0"}>
                     {props.element}
@@ -16,4 +16,4 @@ interface Props {
     element: JSX.Element
 }
 
-export default CardBig;
+export default Card;

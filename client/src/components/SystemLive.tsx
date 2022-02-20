@@ -24,7 +24,7 @@ const SystemLive: FC<Props> = ({basicInformation, extraInformation}) => {
 
 interface Props {
     basicInformation: BasicInformation;
-    extraInformation: ExtraInformation
+    extraInformation: ExtraInformation;
 }
 
 export default SystemLive;
