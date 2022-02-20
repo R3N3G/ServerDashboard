@@ -1,14 +1,19 @@
 package system
 
-type BasicInformation struct {
+type BasicSystemInformation struct {
 	Value      string  `json:"value"`
 	Percentage float64 `json:"percentage"`
 }
 
+type BasicHostInformation struct {
+	Uptime string `json:"uptime"`
+}
+
 type LiveInformation struct {
-	CPU  BasicInformation `json:"cpu"`
-	RAM  BasicInformation `json:"ram"`
-	Disk BasicInformation `json:"disk"`
+	CPU  BasicSystemInformation `json:"cpu"`
+	RAM  BasicSystemInformation `json:"ram"`
+	Disk BasicSystemInformation `json:"disk"`
+	Host BasicHostInformation   `json:"host"`
 }
 
 type Processor struct {
@@ -21,6 +26,9 @@ type Processor struct {
 type Host struct {
 	ServerName      string `json:"server_name"`
 	OperatingSystem string `json:"operating_system"`
+	Platform        string `json:"platform"`
+	PlatformVersion string `json:"platform_version"`
+	Processes       uint64 `json:"processes"`
 }
 
 type Storage struct {

@@ -1,14 +1,19 @@
 import {IconDefinition} from "@fortawesome/fontawesome-svg-core";
 
-export interface BasicInformation {
+export interface BasicSystemInformation {
     value: string,
-    percentage: number
+    percentage: number,
+}
+
+export interface BasicHostInformation {
+    uptime: string,
 }
 
 export interface LiveInformation {
-    cpu: BasicInformation,
-    ram: BasicInformation,
-    disk: BasicInformation,
+    cpu: BasicSystemInformation,
+    ram: BasicSystemInformation,
+    disk: BasicSystemInformation,
+    host: BasicHostInformation,
 }
 
 export interface processor {
@@ -19,24 +24,27 @@ export interface processor {
 }
 
 export interface host {
-    server_name: string
-    operating_system: string
+    server_name: string,
+    operating_system: string,
+    platform: string,
+    platform_version: string,
+    processes: number,
 }
 
 export interface storage {
-    readable: string
-    value: number
-    unit: number
+    readable: string,
+    value: number,
+    unit: number,
 }
 
 export interface StaticInformation {
-    processor: processor
-    host: host
-    ram: storage
-    disk: storage
+    processor: processor,
+    host: host,
+    ram: storage,
+    disk: storage,
 }
 
 export interface ExtraInformation {
-    color: 'success' | 'danger' | 'warning' | 'info' | string;
-    icon: IconDefinition
+    color: 'success' | 'danger' | 'warning' | 'info' | string,
+    icon: IconDefinition,
 }

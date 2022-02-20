@@ -1,6 +1,6 @@
 import {ProgressBar} from "react-bootstrap";
 import React, {FC} from "react";
-import {BasicInformation, ExtraInformation} from "../../types/system";
+import {BasicSystemInformation, ExtraInformation} from "../../types/system";
 
 const SystemMiddle: FC<Props> = ({basicInformation, extraInformation}) => {
     return (
@@ -12,7 +12,7 @@ const SystemMiddle: FC<Props> = ({basicInformation, extraInformation}) => {
 }
 
 interface Props {
-    basicInformation: BasicInformation;
+    basicInformation: BasicSystemInformation;
     extraInformation: ExtraInformation;
 }
 

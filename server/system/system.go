@@ -8,29 +8,34 @@ import (
 	"github.com/jaypipes/ghw/pkg/unitutil"
 	"github.com/shirou/gopsutil/v3/cpu"
 	"github.com/shirou/gopsutil/v3/disk"
+	"github.com/shirou/gopsutil/v3/host"
 	"github.com/shirou/gopsutil/v3/mem"
 	"math"
 	"os"
 	"runtime"
+	"strings"
 	"time"
 )
 
 func ConvertOs(os string) string {
 	switch os {
 	case "darwin":
-		return "Apple MacOS"
-	case "linux":
-		return "Linux"
-	case "windows":
-		return "Microsoft Windows"
+		return "MacOS"
 	default:
-		return "none detected"
+		return strings.Title(os)
 	}
 }
 
 func GetHostInfo() Host {
 	var h Host
-	h.OperatingSystem = ConvertOs(runtime.GOOS)
+	i, err := host.Info()
+	if err != nil {
+		return h
+	}
+	h.OperatingSystem = ConvertOs(i.OS)
+	h.Platform = ConvertOs(i.Platform)
+	h.PlatformVersion = i.PlatformVersion
+	h.Processes = i.Procs
 	hostname, present := os.LookupEnv("SERVER_NAME")
 	if present == false {
 		return h
@@ -89,8 +94,8 @@ func GetMemoryInfo() Storage {
 	return s
 }
 
-func LiveCpu(staticSystem *StaticInformation) BasicInformation {
-	var result BasicInformation
+func LiveCpu(staticSystem *StaticInformation) BasicSystemInformation {
+	var result BasicSystemInformation
 	p, err := cpu.Percent(0, false)
 	if err != nil {
 		return result
@@ -100,8 +105,8 @@ func LiveCpu(staticSystem *StaticInformation) BasicInformation {
 	return result
 }
 
-func LiveRam(staticSystem *StaticInformation) BasicInformation {
-	var result BasicInformation
+func LiveRam(staticSystem *StaticInformation) BasicSystemInformation {
+	var result BasicSystemInformation
 	r, err := mem.VirtualMemory()
 	if err != nil {
 		return result
@@ -116,8 +121,8 @@ func LiveRam(staticSystem *StaticInformation) BasicInformation {
 	return result
 }
 
-func LiveDisk(staticSystem *StaticInformation) BasicInformation {
-	var result BasicInformation
+func LiveDisk(staticSystem *StaticInformation) BasicSystemInformation {
+	var result BasicSystemInformation
 	d, err := disk.Usage("/")
 	if err != nil {
 		return result
@@ -131,12 +136,36 @@ func LiveDisk(staticSystem *StaticInformation) BasicInformation {
 	return result
 }
 
+func formatTime(uptime uint64) string {
+	// t in Microseconds
+	const (
+		day    = 60 * 60 * 24
+		second = 60 * 60
+		hour   = 60
+	)
+	days := uptime / day
+	hours := (uptime - (days * day)) / second
+	minutes := ((uptime - (days * day)) - (hours * second)) / hour
+	return fmt.Sprintf("%d days, %d hours, %d minutes", days, hours, minutes)
+}
+
+func LiveHost() BasicHostInformation {
+	var result BasicHostInformation
+	i, err := host.Info()
+	if err != nil {
+		return result
+	}
+	result.Uptime = formatTime(i.Uptime)
+	return result
+}
+
 func GetLiveSystem(conn *websocket.Conn, staticSystem *StaticInformation) {
 	var result LiveInformation
 	for {
 		result.CPU = LiveCpu(staticSystem)
 		result.RAM = LiveRam(staticSystem)
 		result.Disk = LiveDisk(staticSystem)
+		result.Host = LiveHost()
 
 		send, _ := json.Marshal(result)
 		err := conn.WriteMessage(websocket.TextMessage, send)

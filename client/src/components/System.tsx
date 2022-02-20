@@ -1,7 +1,7 @@
 import SystemBottom from "./SystemBottom";
 import SystemTop from "./SystemTop";
 import {FC} from "react";
-import {BasicInformation, ExtraInformation} from "../../types/system";
+import {BasicSystemInformation, ExtraInformation} from "../../types/system";
 import SystemMiddle from "./SystemMiddle";
 
 const System: FC<Props> = ({staticInfo, basicInformation, extraInformation}) => {
@@ -21,7 +21,7 @@ interface Props {
         info2: string,
         info3: string,
     };
-    basicInformation: BasicInformation;
+    basicInformation: BasicSystemInformation;
     extraInformation: ExtraInformation;
 }
 

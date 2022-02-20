@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
-import {BasicInformation, LiveInformation, StaticInformation} from "../../types/system";
+import {BasicHostInformation, BasicSystemInformation, LiveInformation, StaticInformation} from "../../types/system";
 import axios from "axios";
 import {faHardDrive, faMemory, faMicrochip, faServer} from "@fortawesome/free-solid-svg-icons";
 import SystemExtras from "./SystemExtras";
@@ -13,18 +13,21 @@ const Dashboard = () => {
     const staticSystemUrl = origin + '/system/static/';
 
     const webSocket = useRef<WebSocket | null>(null);
-    const [cpuBasics, setCpuBasics] = useState<BasicInformation>({
+    const [cpuBasics, setCpuBasics] = useState<BasicSystemInformation>({
         value: "", percentage: 0,
     })
-    const [ramBasics, setRamBasics] = useState<BasicInformation>({
+    const [ramBasics, setRamBasics] = useState<BasicSystemInformation>({
         value: "", percentage: 0,
     })
-    const [diskBasics, setDiskBasics] = useState<BasicInformation>({
+    const [diskBasics, setDiskBasics] = useState<BasicSystemInformation>({
         value: "", percentage: 0,
+    })
+    const [hostBasics, setHostBasics] = useState<BasicHostInformation>({
+        uptime: ""
     })
     const [staticSystem, setStaticSystem] = useState<StaticInformation>({
         disk: {readable: "", value: 0, unit: 0,},
-        host: {server_name: "", operating_system: "",},
+        host: {server_name: "", operating_system: "", platform: "", platform_version: "", processes: 0},
         ram: {readable: "", value: 0, unit: 0,},
         processor: {name: "", speed: "", threads: 0, architecture: "",}
     })
@@ -42,6 +45,7 @@ const Dashboard = () => {
                 setCpuBasics(message.cpu);
                 setRamBasics(message.ram);
                 setDiskBasics(message.disk);
+                setHostBasics(message.host);
             }
             webSocket.current.onclose = () => {
                 webSocket.current = null;
@@ -68,6 +72,7 @@ const Dashboard = () => {
                 <CardBig element={
                     <SystemExtras
                         staticInformation={staticSystem}
+                        basicInformation={hostBasics}
                         extraInformation={{
                             color: "info", icon: faServer,
                         }}
@@ -93,8 +98,8 @@ const Dashboard = () => {
                         staticInfo={{
                             name: "Memory",
                             info1: staticSystem.ram.readable,
-                            info2: "string",
-                            info3: "string",
+                            info2: staticSystem.host.processes + " procs",
+                            info3: "",
                         }}
                         basicInformation={ramBasics}
                         extraInformation={{
@@ -108,8 +113,8 @@ const Dashboard = () => {
                         staticInfo={{
                             name: "Disk",
                             info1: staticSystem.disk.readable,
-                            info2: "string",
-                            info3: "string",
+                            info2: "",
+                            info3: "",
                         }}
                         basicInformation={diskBasics}
                         extraInformation={{
