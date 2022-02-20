@@ -1,12 +1,12 @@
 import React from 'react';
-import System from "./components/System";
+import Dashboard from "./components/Dashboard";
 import './customStyle.scss';
 import './style.css';
 
 function App() {
     return (
         <div className={"container"}>
-            <System/>
+            <Dashboard/>
         </div>
     );
 }

@@ -6,7 +6,6 @@ import (
 	"github.com/dariubs/percent"
 	"github.com/gorilla/websocket"
 	"github.com/jaypipes/ghw/pkg/unitutil"
-	. "github.com/klauspost/cpuid/v2"
 	"github.com/shirou/gopsutil/v3/cpu"
 	"github.com/shirou/gopsutil/v3/disk"
 	"github.com/shirou/gopsutil/v3/mem"
@@ -45,16 +44,12 @@ func GetCpuInfo() Processor {
 	p.Threads = runtime.NumCPU()
 	p.Architecture = runtime.GOARCH
 	c, err := cpu.Info()
-	if err != nil || len(c) <= 0 {
+	if err == nil {
+		p.Name = c[0].ModelName
+		p.Speed = fmt.Sprintf("%.1f Ghz", c[0].Mhz/1000)
+	} else {
 		p.Name = "none detected"
-		return p
 	}
-	if c[0].ModelName == "" {
-		p.Name = "none detected"
-		return p
-	}
-	p.Name = c[0].ModelName
-	p.Cores = CPU.PhysicalCores
 	return p
 }
 
@@ -62,7 +57,8 @@ func processStorage(s *Storage, total uint64) {
 	unit, unitStr := unitutil.AmountString(int64(total))
 	s.Unit = float64(unit)
 	s.Value = float64(total) / s.Unit
-	s.Readable = fmt.Sprintf("%.2f %s", s.Value, unitStr)
+	s.UnitString = unitStr
+	s.Readable = fmt.Sprintf("%.0f %s", s.Value, s.UnitString)
 }
 
 func GetDiskInfo() Storage {
@@ -114,7 +110,7 @@ func LiveRam(staticSystem *StaticInformation) BasicInformation {
 	used := r.Used
 	if used > 0 {
 		niceUsage = float64(used) / staticSystem.Memory.Unit
-		result.Value = fmt.Sprintf("%.2f / %s", niceUsage, staticSystem.Memory.Readable)
+		result.Value = fmt.Sprintf("%.0f %s", niceUsage, staticSystem.Memory.UnitString)
 		result.Percentage = math.RoundToEven(percent.PercentOfFloat(niceUsage, staticSystem.Memory.Value))
 	}
 	return result
@@ -129,7 +125,7 @@ func LiveDisk(staticSystem *StaticInformation) BasicInformation {
 	usage := d.Used
 	if usage > 0 {
 		niceUsage := float64(usage) / staticSystem.Disk.Unit
-		result.Value = fmt.Sprintf("%.2f / %s", niceUsage, staticSystem.Disk.Readable)
+		result.Value = fmt.Sprintf("%.0f %s", niceUsage, staticSystem.Disk.UnitString)
 		result.Percentage = math.RoundToEven(percent.PercentOfFloat(niceUsage, staticSystem.Disk.Value))
 	}
 	return result

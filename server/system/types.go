@@ -13,7 +13,7 @@ type LiveInformation struct {
 
 type Processor struct {
 	Name         string `json:"name"`
-	Cores        int    `json:"cores"`
+	Speed        string `json:"speed"`
 	Threads      int    `json:"threads"`
 	Architecture string `json:"architecture"`
 }
@@ -24,9 +24,10 @@ type Host struct {
 }
 
 type Storage struct {
-	Readable string  `json:"readable"`
-	Value    float64 `json:"value"`
-	Unit     float64 `json:"unit"`
+	Readable   string  `json:"readable"`
+	Value      float64 `json:"value"`
+	UnitString string  `json:"unit_string"`
+	Unit       float64 `json:"unit"`
 }
 
 type StaticInformation struct {

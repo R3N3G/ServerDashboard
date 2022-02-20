@@ -11,10 +11,10 @@ const SystemExtras: FC<Props> = ({staticInformation, extraInformation}) => {
                 <FontAwesomeIcon icon={extraInformation.icon} size="2x"/>
             </div>
             <div className={"mb-2 fw-bold text-" + extraInformation.color}>{staticInformation.host.server_name}</div>
-            <div className="fw-bold mb-2 overflow-hidden overflow-ellipsis">
+            <div className="fw-bold overflow-hidden overflow-ellipsis">
                 <div>OS: {staticInformation.host.operating_system}</div>
                 <div>Architecture: {staticInformation.processor.architecture}</div>
-                <div>Cores: {staticInformation.processor.cores} Threads: {staticInformation.processor.threads}</div>
+                <div>Threads: {staticInformation.processor.threads}</div>
             </div>
         </div>
     );

@@ -1,105 +1,28 @@
-import React, {useCallback, useEffect, useRef, useState} from "react";
-import {BasicInformation, LiveInformation, StaticInformation} from "../../types/system";
-import axios from "axios";
-import {faHardDrive, faMemory, faMicrochip, faServer} from "@fortawesome/free-solid-svg-icons";
-import SystemLive from "./SystemLive";
-import SystemExtras from "./SystemExtras";
-import CardSmall from "./CardSmall";
-import CardBig from "./CardBig";
+import SystemBottom from "./SystemBottom";
+import SystemTop from "./SystemTop";
+import {FC} from "react";
+import {BasicInformation, ExtraInformation} from "../../types/system";
+import SystemMiddle from "./SystemMiddle";
 
-const System = () => {
-    const origin = process.env.NODE_ENV === "development" ? "http://localhost:4000" : window.origin;
-    const webSocketUrl = origin.replace('http', 'ws') + '/system/ws/';
-    const staticSystemUrl = origin + '/system/static/';
-
-    const webSocket = useRef<WebSocket | null>(null);
-    const [cpuBasics, setCpuBasics] = useState<BasicInformation>({
-        value: "", percentage: 0,
-    })
-    const [ramBasics, setRamBasics] = useState<BasicInformation>({
-        value: "", percentage: 0,
-    })
-    const [diskBasics, setDiskBasics] = useState<BasicInformation>({
-        value: "", percentage: 0,
-    })
-    const [staticSystem, setStaticSystem] = useState<StaticInformation>({
-        disk: {readable: "", value: 0, unit: 0,},
-        host: {server_name: "", operating_system: "",},
-        memory: {readable: "", value: 0, unit: 0,},
-        processor: {name: "", cores: 0, threads: 0, architecture: "",}
-    })
-
-    const initWebsocket = useCallback(() => {
-        webSocket.current = new WebSocket(webSocketUrl);
-        if (webSocket.current) {
-            webSocket.current.onclose = () => {
-                setTimeout(function () {
-                    initWebsocket();
-                }, 2000);
-            };
-            webSocket.current.onmessage = (evt) => {
-                const message: LiveInformation = JSON.parse(evt.data)
-                setCpuBasics(message.cpu);
-                setRamBasics(message.ram);
-                setDiskBasics(message.disk);
-            }
-            webSocket.current.onclose = () => {
-                webSocket.current = null;
-            }
-        }
-    }, [webSocket, webSocketUrl]);
-
-    const getStaticSystem = useCallback(() => {
-        axios.get(staticSystemUrl)
-            .then((res) => {
-                const staticInformation: StaticInformation = res.data as StaticInformation;
-                setStaticSystem(staticInformation);
-            });
-    }, [staticSystemUrl]);
-
-    useEffect(() => {
-        initWebsocket();
-        getStaticSystem();
-    }, [initWebsocket, getStaticSystem])
-
+const System: FC<Props> = ({staticInfo, basicInformation, extraInformation}) => {
     return (
-        <div className={"row vh-100 align-items-center text-center"}>
-            <div className={"row g-3 m-0 justify-content-center"}>
-                <CardBig element={
-                    <SystemExtras
-                        staticInformation={staticSystem}
-                        extraInformation={{
-                            color: "info", icon: faServer,
-                        }}
-                    />}
-                />
-                <CardSmall element={
-                    <SystemLive
-                        basicInformation={cpuBasics}
-                        extraInformation={{
-                            color: "primary", icon: faMicrochip,
-                        }}
-                    />}
-                />
-                <CardSmall element={
-                    <SystemLive
-                        basicInformation={ramBasics}
-                        extraInformation={{
-                            color: "secondary", icon: faMemory,
-                        }}
-                    />}
-                />
-                <CardSmall element={
-                    <SystemLive
-                        basicInformation={diskBasics}
-                        extraInformation={{
-                            color: "success", icon: faHardDrive,
-                        }}
-                    />}
-                />
-            </div>
+        <div className={"text-nowrap"}>
+            <SystemTop name={staticInfo.name} extraInformation={extraInformation} basicInformation={basicInformation}/>
+            <SystemMiddle basicInformation={basicInformation} extraInformation={extraInformation}/>
+            <SystemBottom info1={staticInfo.info1} info2={staticInfo.info2} info3={staticInfo.info3}/>
         </div>
     );
+}
+
+interface Props {
+    staticInfo: {
+        name: string
+        info1: string,
+        info2: string,
+        info3: string,
+    };
+    basicInformation: BasicInformation;
+    extraInformation: ExtraInformation;
 }
 
 export default System;

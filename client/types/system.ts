@@ -13,7 +13,7 @@ export interface LiveInformation {
 
 export interface processor {
     name: string,
-    cores: number,
+    speed: string,
     threads: number,
     architecture: string,
 }
@@ -32,7 +32,7 @@ export interface storage {
 export interface StaticInformation {
     processor: processor
     host: host
-    memory: storage
+    ram: storage
     disk: storage
 }
 
