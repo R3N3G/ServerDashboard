@@ -2,14 +2,14 @@ import {FC} from "react";
 
 const SystemBottom: FC<Props> = (props) => {
     return (
-        <div className="row g-0 text-center">
-            <div className="col p-2">
+        <div className="row py-3 text-center">
+            <div className="col">
                 <span className="ms-2">{props.info1}</span>
             </div>
-            <div className="col p-2">
+            <div className="col">
                 <span className="ms-2">{props.info2}</span>
             </div>
-            <div className="col p-2">
+            <div className="col">
                 <span className="ms-2">{props.info3}</span>
             </div>
         </div>
