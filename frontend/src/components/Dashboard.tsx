@@ -83,7 +83,7 @@ const Dashboard = () => {
                         staticInfo={{
                             name: "CPU",
                             info1: staticSystem.processor.threads + " Threads",
-                            info2: staticSystem.processor.speed,
+                            info2: "Max: " + staticSystem.processor.speed,
                         }}
                         basicInformation={cpuBasics}
                         extraInformation={{
@@ -96,7 +96,7 @@ const Dashboard = () => {
                     <System
                         staticInfo={{
                             name: "Memory",
-                            info1: staticSystem.ram.readable,
+                            info1: "Total: " + staticSystem.ram.readable,
                             info2: staticSystem.processor.architecture,
                         }}
                         basicInformation={ramBasics}
@@ -110,7 +110,7 @@ const Dashboard = () => {
                     <System
                         staticInfo={{
                             name: "Disk",
-                            info1: staticSystem.disk.readable,
+                            info1: "Total: " + staticSystem.disk.readable,
                             info2: staticSystem.host.partitions + " Partitions",
                         }}
                         basicInformation={diskBasics}

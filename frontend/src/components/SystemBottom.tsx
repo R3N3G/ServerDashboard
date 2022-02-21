@@ -2,7 +2,7 @@ import {FC} from "react";
 
 const SystemBottom: FC<Props> = (props) => {
     return (
-        <div className="row p-3 text-center">
+        <div className="row pt-3 p-2 small">
             <div className="col">
                 <span className="ms-2">{props.info1}</span>
             </div>
