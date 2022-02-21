@@ -29,6 +29,7 @@ export interface host {
     platform: string,
     platform_version: string,
     processes: number,
+    partitions: number,
 }
 
 export interface storage {

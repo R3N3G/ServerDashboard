@@ -20,7 +20,7 @@ type Webpage struct {
 func (wp *Webpage) setMiddlewares() {
 	wp.Router.Use(gin.Recovery())
 	wp.Router.Use(cors.New(cors.Config{
-		AllowOrigins: []string{"*"},
+		AllowOrigins: []string{"http://localhost:3000"},
 	}))
 	wp.Router.SetTrustedProxies(nil)
 }
@@ -48,9 +48,7 @@ func SetupServer() *gin.Engine {
 	wp := Webpage{
 		Router: gin.New(),
 		WsUpgrade: websocket.Upgrader{
-			ReadBufferSize:  1024,
-			WriteBufferSize: 1024,
-			CheckOrigin:     func(r *http.Request) bool { return true },
+			CheckOrigin: func(r *http.Request) bool { return true },
 		},
 	}
 	wp.setMiddlewares()

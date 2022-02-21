@@ -9,9 +9,6 @@ const SystemBottom: FC<Props> = (props) => {
             <div className="col">
                 <span className="ms-2">{props.info2}</span>
             </div>
-            <div className="col">
-                <span className="ms-2">{props.info3}</span>
-            </div>
         </div>
     );
 }
@@ -19,7 +16,6 @@ const SystemBottom: FC<Props> = (props) => {
 interface Props {
     info1: string;
     info2: string;
-    info3: string;
 }
 
 export default SystemBottom;

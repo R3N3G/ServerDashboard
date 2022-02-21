@@ -1,19 +1,17 @@
 import React, {FC} from "react";
 import {BasicHostInformation, ExtraInformation, StaticInformation} from "../../types/system";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import DarkMode from "./darkMode";
+import SystemTop from "./SystemTop";
 
 const SystemExtras: FC<Props> = ({staticInformation, basicInformation, extraInformation}) => {
     return (
-        <div className={"p-3 text-nowrap position-relative"}>
+        <div className={"text-nowrap"}>
+            <SystemTop name={staticInformation.host.server_name}
+                       value={staticInformation.host.operating_system + " " + staticInformation.host.platform + " " + staticInformation.host.platform_version}
+                       extraInformation={extraInformation}
+            />
             <DarkMode/>
-            <div className={"mb-2 text-" + extraInformation.color}>
-                <FontAwesomeIcon icon={extraInformation.icon} size="2x"/>
-            </div>
-            <div className={"mb-2 fw-bold text-" + extraInformation.color}>{staticInformation.host.server_name}</div>
-            <div>{staticInformation.host.operating_system}</div>
-            <div>{staticInformation.host.platform} {staticInformation.host.platform_version}</div>
-            <div>{basicInformation.uptime}</div>
+            <div className="px-3 pb-3">Uptime: {basicInformation.uptime}</div>
         </div>
     );
 }

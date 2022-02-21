@@ -1,8 +1,8 @@
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {FC} from "react";
-import {BasicSystemInformation, ExtraInformation} from "../../types/system";
+import {ExtraInformation} from "../../types/system";
 
-const SystemTop: FC<Props> = ({name, basicInformation, extraInformation}) => {
+const SystemTop: FC<Props> = ({name, value, extraInformation}) => {
     return (
         <div className="d-flex align-items-center p-3">
             <span className={"text-" + extraInformation.color}>
@@ -10,7 +10,7 @@ const SystemTop: FC<Props> = ({name, basicInformation, extraInformation}) => {
             </span>
             <div className="d-flex flex-column">
                 <span className="ms-3 fw-bold">{name}</span>
-                <span className="ms-3 small">{basicInformation.value}</span>
+                <span className="ms-3 small">{value}</span>
             </div>
         </div>
     );
@@ -18,7 +18,7 @@ const SystemTop: FC<Props> = ({name, basicInformation, extraInformation}) => {
 
 interface Props {
     name: string;
-    basicInformation: BasicSystemInformation;
+    value: string;
     extraInformation: ExtraInformation;
 }
 

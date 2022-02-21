@@ -29,6 +29,7 @@ type Host struct {
 	Platform        string `json:"platform"`
 	PlatformVersion string `json:"platform_version"`
 	Processes       uint64 `json:"processes"`
+	Partitions      int    `json:"partitions"`
 }
 
 type Storage struct {

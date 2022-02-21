@@ -27,7 +27,7 @@ const Dashboard = () => {
     })
     const [staticSystem, setStaticSystem] = useState<StaticInformation>({
         disk: {readable: "", value: 0, unit: 0,},
-        host: {server_name: "", operating_system: "", platform: "", platform_version: "", processes: 0},
+        host: {server_name: "", operating_system: "", platform: "", platform_version: "", processes: 0, partitions: 0},
         ram: {readable: "", value: 0, unit: 0,},
         processor: {name: "", speed: "", threads: 0, architecture: "",}
     })
@@ -83,8 +83,7 @@ const Dashboard = () => {
                         staticInfo={{
                             name: "CPU",
                             info1: staticSystem.processor.threads + " Threads",
-                            info2: staticSystem.processor.architecture,
-                            info3: staticSystem.processor.speed,
+                            info2: staticSystem.processor.speed,
                         }}
                         basicInformation={cpuBasics}
                         extraInformation={{
@@ -98,8 +97,7 @@ const Dashboard = () => {
                         staticInfo={{
                             name: "Memory",
                             info1: staticSystem.ram.readable,
-                            info2: staticSystem.host.processes + " procs",
-                            info3: "",
+                            info2: staticSystem.processor.architecture,
                         }}
                         basicInformation={ramBasics}
                         extraInformation={{
@@ -113,8 +111,7 @@ const Dashboard = () => {
                         staticInfo={{
                             name: "Disk",
                             info1: staticSystem.disk.readable,
-                            info2: "",
-                            info3: "",
+                            info2: staticSystem.host.partitions + " Partitions",
                         }}
                         basicInformation={diskBasics}
                         extraInformation={{

@@ -36,6 +36,11 @@ func GetHostInfo() Host {
 	h.Platform = ConvertOs(i.Platform)
 	h.PlatformVersion = i.PlatformVersion
 	h.Processes = i.Procs
+	d, err := disk.Partitions(false)
+	if err != nil {
+		return h
+	}
+	h.Partitions = len(d)
 	hostname, present := os.LookupEnv("SERVER_NAME")
 	if present == false {
 		return h
