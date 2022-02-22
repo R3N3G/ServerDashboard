@@ -9,6 +9,9 @@ const MyChart: FC<Props> = ({extraInformation, basicInformation}) => {
     const color = 'rgba(' + style.getPropertyValue('--bs-' + extraInformation.color + '-rgb') + ')';
 
     const options = {
+        animation: {
+            duration: 0
+        },
         scales: {
             y: {
                 display: false,
@@ -32,17 +35,19 @@ const MyChart: FC<Props> = ({extraInformation, basicInformation}) => {
 
     return (
         <div>
-            <Chart type='line' options={options} data={{
-                datasets: [
-                    {
-                        data: extraInformation.chartData,
-                        borderColor: color,
-                        fill: false,
-                        tension: 0.2,
-                        pointRadius: 0,
-                    },
-                ],
-            }}/>
+            <Chart id="myChart" type='line'
+                   options={options}
+                   data={{
+                       datasets: [
+                           {
+                               data: extraInformation.chartData,
+                               backgroundColor: color,
+                               fill: false,
+                               tension: 0.2,
+                               pointRadius: 1.5
+                           },
+                       ],
+                   }}/>
         </div>
     );
 }
