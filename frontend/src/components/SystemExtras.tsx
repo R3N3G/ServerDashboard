@@ -1,6 +1,6 @@
 import React, {FC} from "react";
 import {BasicHostInformation, ExtraInformation, StaticInformation} from "../../types/system";
-import DarkMode from "./darkMode";
+import DarkMode from "./DarkMode";
 import SystemTop from "./SystemTop";
 
 const SystemExtras: FC<Props> = ({staticInformation, basicInformation, extraInformation}) => {

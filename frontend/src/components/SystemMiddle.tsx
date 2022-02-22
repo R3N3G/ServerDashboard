@@ -1,12 +1,11 @@
-import {ProgressBar} from "react-bootstrap";
 import React, {FC} from "react";
 import {BasicSystemInformation, ExtraInformation} from "../../types/system";
+import MyChart from "./MyChart";
 
 const SystemMiddle: FC<Props> = ({basicInformation, extraInformation}) => {
     return (
         <div className={"px-3 rounded-bottom"}>
-            <ProgressBar min={0} max={100} animated now={basicInformation.percentage}
-                         variant={extraInformation.color}/>
+            <MyChart extraInformation={extraInformation} basicInformation={basicInformation}/>
         </div>
     );
 }

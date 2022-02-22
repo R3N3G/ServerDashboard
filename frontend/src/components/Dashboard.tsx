@@ -32,6 +32,20 @@ const Dashboard = () => {
         processor: {name: "", speed: "", threads: 0, architecture: "",}
     })
 
+    const amountOfChartValues = 30;
+    const [cpuChartData] = useState<number[]>(Array(amountOfChartValues));
+    const [ramChartData] = useState<number[]>(Array(amountOfChartValues));
+    const [diskChartData] = useState<number[]>(Array(amountOfChartValues));
+
+    const updateCharts = (message: LiveInformation) => {
+        cpuChartData.shift()
+        cpuChartData.push(message.cpu.percentage)
+        ramChartData.shift()
+        ramChartData.push(message.ram.percentage)
+        diskChartData.shift()
+        diskChartData.push(message.disk.percentage)
+    }
+
     const initWebsocket = useCallback(() => {
         webSocket.current = new WebSocket(webSocketUrl);
         if (webSocket.current) {
@@ -46,6 +60,7 @@ const Dashboard = () => {
                 setRamBasics(message.ram);
                 setDiskBasics(message.disk);
                 setHostBasics(message.host);
+                updateCharts(message)
             }
             webSocket.current.onclose = () => {
                 webSocket.current = null;
@@ -87,8 +102,7 @@ const Dashboard = () => {
                         }}
                         basicInformation={cpuBasics}
                         extraInformation={{
-                            color: "primary",
-                            icon: faMicrochip,
+                            color: "primary", icon: faMicrochip, chartData: cpuChartData, amountOfChartValues: 60,
                         }}
                     />
                 }/>
@@ -101,8 +115,7 @@ const Dashboard = () => {
                         }}
                         basicInformation={ramBasics}
                         extraInformation={{
-                            color: "secondary",
-                            icon: faMemory,
+                            color: "secondary", icon: faMemory, chartData: ramChartData, amountOfChartValues: 60,
                         }}
                     />
                 }/>
@@ -115,8 +128,7 @@ const Dashboard = () => {
                         }}
                         basicInformation={diskBasics}
                         extraInformation={{
-                            color: "success",
-                            icon: faHardDrive,
+                            color: "success", icon: faHardDrive, chartData: diskChartData, amountOfChartValues: 60,
                         }}
                     />
                 }/>

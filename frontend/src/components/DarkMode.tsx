@@ -26,7 +26,7 @@ const DarkMode = () => {
     return (
         <div className={"position-absolute top-0 end-0 p-3 sticky-top"}>
             <div className="form-check form-switch d-flex align-items-center">
-                <label className="form-check-label" htmlFor="dark_mode_toggle"
+                <label className="form-check-label btn text-dark" htmlFor="dark_mode_toggle"
                        data-tip="" data-for="darkModeTip">
                     {isDark ? <MoonFill size={20}/> : <SunFill size={20}/>}
                 </label>
