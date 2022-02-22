@@ -5,7 +5,6 @@ import {faHardDrive, faMemory, faMicrochip, faServer} from "@fortawesome/free-so
 import SystemExtras from "./SystemExtras";
 import Card from "./Card";
 import System from "./System";
-import CardBig from "./CardBig";
 
 const Dashboard = () => {
     const origin = process.env.NODE_ENV === "development" ? "http://localhost:4000" : window.origin;
@@ -84,7 +83,7 @@ const Dashboard = () => {
     return (
         <div className={"row vh-100 align-items-center"}>
             <div className={"row g-3 m-0"}>
-                <CardBig element={
+                <Card element={
                     <SystemExtras
                         staticInformation={staticSystem}
                         basicInformation={hostBasics}

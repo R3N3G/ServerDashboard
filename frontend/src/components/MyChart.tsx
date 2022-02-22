@@ -9,6 +9,8 @@ const MyChart: FC<Props> = ({extraInformation, basicInformation}) => {
     const color = 'rgba(' + style.getPropertyValue('--bs-' + extraInformation.color + '-rgb') + ')';
 
     const options = {
+        responsive: true,
+        maintainAspectRatio: false,
         animation: {
             duration: 0
         },

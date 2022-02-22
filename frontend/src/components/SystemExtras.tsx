@@ -7,7 +7,12 @@ const SystemExtras: FC<Props> = ({staticInformation, basicInformation, extraInfo
     return (
         <div className={"text-nowrap"}>
             <SystemTop name={staticInformation.host.server_name}
-                       value={staticInformation.host.operating_system + " " + staticInformation.host.platform + " " + staticInformation.host.platform_version}
+                       basicInformation={
+                           {
+                               value: staticInformation.host.operating_system + " " + staticInformation.host.platform + " " + staticInformation.host.platform_version,
+                               percentage: -1,
+                           }
+                       }
                        extraInformation={extraInformation}
             />
             <DarkMode/>

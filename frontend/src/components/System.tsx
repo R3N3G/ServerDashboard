@@ -7,7 +7,7 @@ import SystemMiddle from "./SystemMiddle";
 const System: FC<Props> = ({staticInfo, basicInformation, extraInformation}) => {
     return (
         <div className={"text-nowrap"}>
-            <SystemTop name={staticInfo.name} extraInformation={extraInformation} value={basicInformation.value}/>
+            <SystemTop name={staticInfo.name} extraInformation={extraInformation} basicInformation={basicInformation}/>
             <SystemMiddle basicInformation={basicInformation} extraInformation={extraInformation}/>
             <SystemBottom info1={staticInfo.info1} info2={staticInfo.info2}/>
         </div>
