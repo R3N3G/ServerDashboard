@@ -1,6 +1,6 @@
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {FC} from "react";
-import {BasicSystemInformation, ExtraInformation} from "../../types/system";
+import {BasicSystemInformation, ExtraLiveInformation} from "../../types/system";
 
 const SystemTop: FC<Props> = ({name, basicInformation, extraInformation}) => {
     return (
@@ -22,7 +22,7 @@ const SystemTop: FC<Props> = ({name, basicInformation, extraInformation}) => {
 interface Props {
     name: string;
     basicInformation: BasicSystemInformation;
-    extraInformation: ExtraInformation;
+    extraInformation: ExtraLiveInformation;
 }
 
 export default SystemTop;

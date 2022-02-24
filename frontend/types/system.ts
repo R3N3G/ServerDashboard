@@ -45,9 +45,9 @@ export interface StaticInformation {
     disk: storage,
 }
 
-export interface ExtraInformation {
+export interface ExtraLiveInformation {
     color: 'success' | 'danger' | 'warning' | 'info' | string,
     icon: IconDefinition,
-    chartData?: number[],
-    amountOfChartValues?: number,
+    chartData?: string[],
+    chartLabelX?: string[],
 }

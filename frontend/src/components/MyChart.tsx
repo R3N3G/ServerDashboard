@@ -1,18 +1,39 @@
 import 'chart.js/auto';
 import {Chart} from 'react-chartjs-2';
 import {FC} from "react";
-import {BasicSystemInformation, ExtraInformation} from "../../types/system";
+import {ExtraLiveInformation} from "../../types/system";
 
-
-const MyChart: FC<Props> = ({extraInformation, basicInformation}) => {
+const MyChart: FC<Props> = ({extraInformation}) => {
     const style = getComputedStyle(document.body);
     const color = 'rgba(' + style.getPropertyValue('--bs-' + extraInformation.color + '-rgb') + ')';
+
+    const data = {
+        datasets: [
+            {
+                data: extraInformation.chartData,
+                borderColor: color,
+                backgroundColor: color,
+                fill: false,
+                tension: 0.5,
+                pointRadius: 1
+            },
+        ],
+    };
 
     const options = {
         responsive: true,
         maintainAspectRatio: false,
-        animation: {
-            duration: 0
+        plugins: {
+            title: {
+                display: true,
+                text: 'Usage'
+            },
+            legend: {
+                display: false,
+            },
+        },
+        interaction: {
+            intersect: false,
         },
         scales: {
             y: {
@@ -21,42 +42,22 @@ const MyChart: FC<Props> = ({extraInformation, basicInformation}) => {
                 max: 100,
             },
             x: {
-                labels: extraInformation.chartData,
-                display: false
+                display: false,
+                labels: extraInformation.chartLabelX,
             }
         },
-        plugins: {
-            legend: {
-                display: false,
-            },
-            labels: {
-                display: false,
-            },
+        animation: {
+            duration: 0
         },
     };
 
     return (
-        <div>
-            <Chart id="myChart" type='line'
-                   options={options}
-                   data={{
-                       datasets: [
-                           {
-                               data: extraInformation.chartData,
-                               backgroundColor: color,
-                               fill: false,
-                               tension: 0.2,
-                               pointRadius: 1.5
-                           },
-                       ],
-                   }}/>
-        </div>
+        <Chart id="myChart" type='line' options={options} data={data}/>
     );
 }
 
 interface Props {
-    extraInformation: ExtraInformation;
-    basicInformation: BasicSystemInformation;
+    extraInformation: ExtraLiveInformation;
 }
 
 export default MyChart;
