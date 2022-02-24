@@ -8,8 +8,8 @@ import LiveCard from "./LiveCard";
 import {API_ENDPOINT_URL} from "../config";
 
 const Dashboard = () => {
-    const webSocketUrl = API_ENDPOINT_URL.replace('http', 'ws') + '/system/ws';
-    const staticSystemUrl = API_ENDPOINT_URL + '/system/static';
+    const webSocketUrl = API_ENDPOINT_URL.replace('http', 'ws') + '/system/ws/';
+    const staticSystemUrl = API_ENDPOINT_URL + '/system/static/';
     const webSocket = useRef<WebSocket | null>(null);
 
     const amountOfChartValues = 60;
