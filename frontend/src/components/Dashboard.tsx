@@ -32,20 +32,20 @@ const Dashboard = () => {
     })
 
     const amountOfChartValues = 40;
-    const [cpuChartData] = useState<string[]>(Array(amountOfChartValues).fill("0"));
-    const [ramChartData] = useState<string[]>(Array(amountOfChartValues).fill("0"));
-    const [diskChartData] = useState<string[]>(Array(amountOfChartValues).fill("0"));
+    const [cpuChartData] = useState<number[]>(Array(amountOfChartValues).fill(0));
+    const [ramChartData] = useState<number[]>(Array(amountOfChartValues).fill(0));
+    const [diskChartData] = useState<number[]>(Array(amountOfChartValues).fill(0));
     const [chartLabelX] = useState<string[]>([...Array(amountOfChartValues)].map((value, index) => {
         return amountOfChartValues - index + " seconds ago";
     }))
 
     const updateCharts = (message: LiveInformation) => {
         cpuChartData.shift()
-        cpuChartData.push(message.cpu.percentage.toString())
+        cpuChartData.push(message.cpu.percentage)
         ramChartData.shift()
-        ramChartData.push(message.ram.percentage.toString())
+        ramChartData.push(message.ram.percentage)
         diskChartData.shift()
-        diskChartData.push(message.disk.percentage.toString())
+        diskChartData.push(message.disk.percentage)
     }
 
     const initWebsocket = useCallback(() => {

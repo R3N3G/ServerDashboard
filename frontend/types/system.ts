@@ -48,6 +48,6 @@ export interface StaticInformation {
 export interface ExtraLiveInformation {
     color: 'success' | 'danger' | 'warning' | 'info' | string,
     icon: IconDefinition,
-    chartData?: string[],
+    chartData?: number[],
     chartLabelX?: string[],
 }

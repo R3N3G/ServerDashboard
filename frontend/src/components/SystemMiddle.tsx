@@ -69,7 +69,7 @@ const SystemMiddle: FC<Props> = ({extraInformation}) => {
     };
 
     return (
-        <div className={"px-3 rounded-bottom"}>
+        <div className={"px-3"}>
             <Line options={options} data={data}/>
         </div>
     );
