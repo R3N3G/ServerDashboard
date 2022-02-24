@@ -17,7 +17,7 @@ const LiveCardHeader: FC<Props> = ({staticInfo, basicInformation, extraInformati
                     className="small">{basicInformation.value} {staticInfo.total && " / " + staticInfo.total}</span>
             </div>
             <div className="position-absolute top-0 end-0 p-3 sticky-top fs-2">
-                {basicInformation.percentage != -1 && basicInformation.percentage + " %"}
+                {basicInformation.percentage !== -1 && basicInformation.percentage + " %"}
             </div>
         </div>
     );
