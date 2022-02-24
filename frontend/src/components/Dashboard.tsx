@@ -5,11 +5,11 @@ import {faHardDrive, faMemory, faMicrochip, faServer} from "@fortawesome/free-so
 import OverviewCard from "./OverviewCard";
 import CardWrapper from "./CardWrapper";
 import LiveCard from "./LiveCard";
+import {API_ENDPOINT_URL} from "../config";
 
 const Dashboard = () => {
-    const origin = process.env.NODE_ENV === "development" ? "http://localhost:4000" : window.origin;
-    const webSocketUrl = origin.replace('http', 'ws') + '/system/ws';
-    const staticSystemUrl = origin + '/system/static';
+    const webSocketUrl = API_ENDPOINT_URL.replace('http', 'ws') + '/system/ws';
+    const staticSystemUrl = API_ENDPOINT_URL + '/system/static';
     const webSocket = useRef<WebSocket | null>(null);
 
     const amountOfChartValues = 60;
