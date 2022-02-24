@@ -28,7 +28,7 @@ const Dashboard = () => {
         value: "", percentage: 0,
     });
     const [hostBasics, setHostBasics] = useState<BasicHostInformation>({
-        uptime: {days: 0, hours: "", minutes: "", seconds: "",},
+        uptime: {days: 0, hours: "00", minutes: "00", seconds: "00",},
     });
     const [staticSystem, setStaticSystem] = useState<StaticInformation>({
         disk: {readable: "", value: 0, unit: 0,},
