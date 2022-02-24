@@ -47,7 +47,7 @@ func GetHostInfo() Host {
 	totalSwap := s.Total
 	if totalSwap > 0 {
 		unit, unitStr := unitutil.AmountString(int64(totalSwap))
-		h.TotalSwap = fmt.Sprintf("%.0f %s", float64(totalSwap)/float64(unit), unitStr)
+		h.TotalSwap = fmt.Sprintf("%.2f %s", float64(totalSwap)/float64(unit), unitStr)
 	} else {
 		h.TotalSwap = "No"
 	}
@@ -78,7 +78,7 @@ func processStorage(s *Storage, total uint64) {
 	s.Unit = float64(unit)
 	s.Value = float64(total) / s.Unit
 	s.UnitString = unitStr
-	s.Readable = fmt.Sprintf("%.0f %s", s.Value, s.UnitString)
+	s.Readable = fmt.Sprintf("%.2f %s", s.Value, s.UnitString)
 }
 
 func GetDiskInfo() Storage {
@@ -130,7 +130,7 @@ func LiveRam(staticSystem *StaticInformation) BasicSystemInformation {
 	used := r.Used
 	if used > 0 {
 		niceUsage = float64(used) / staticSystem.Memory.Unit
-		result.Value = fmt.Sprintf("%.0f", niceUsage)
+		result.Value = fmt.Sprintf("%.2f", niceUsage)
 		result.Percentage = math.RoundToEven(percent.PercentOfFloat(niceUsage, staticSystem.Memory.Value))
 	}
 	return result
@@ -145,7 +145,7 @@ func LiveDisk(staticSystem *StaticInformation) BasicSystemInformation {
 	usage := d.Used
 	if usage > 0 {
 		niceUsage := float64(usage) / staticSystem.Disk.Unit
-		result.Value = fmt.Sprintf("%.0f", niceUsage)
+		result.Value = fmt.Sprintf("%.2f", niceUsage)
 		result.Percentage = math.RoundToEven(percent.PercentOfFloat(niceUsage, staticSystem.Disk.Value))
 	}
 	return result
