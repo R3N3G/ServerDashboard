@@ -5,11 +5,9 @@ import {faHardDrive, faMemory, faMicrochip, faServer} from "@fortawesome/free-so
 import OverviewCard from "./OverviewCard";
 import CardWrapper from "./CardWrapper";
 import LiveCard from "./LiveCard";
-import {API_ENDPOINT_URL} from "../config";
+import {STATIC_ENDPOINT_URL, WEBSOCKET_ENDPOINT_URL} from "../config";
 
 const Dashboard = () => {
-    const webSocketUrl = API_ENDPOINT_URL.replace('http', 'ws') + '/system/ws/';
-    const staticSystemUrl = API_ENDPOINT_URL + '/system/static/';
     const webSocket = useRef<WebSocket | null>(null);
 
     const amountOfChartValues = 60;
@@ -62,7 +60,7 @@ const Dashboard = () => {
             setHostBasics(message.host);
         };
         const getStaticSystem = () => {
-            axios.get(staticSystemUrl)
+            axios.get(STATIC_ENDPOINT_URL)
                 .then((res) => {
                     const staticInformation: StaticInformation = res.data as StaticInformation;
                     setStaticSystem(staticInformation);
@@ -86,12 +84,12 @@ const Dashboard = () => {
             }
         };
         const openWebSocket = () => {
-            webSocket.current = new WebSocket(webSocketUrl);
+            webSocket.current = new WebSocket(WEBSOCKET_ENDPOINT_URL);
         };
         getStaticSystem();
         openWebSocket();
         initWebSocketHandler();
-    }, [staticSystemUrl, cpuChartData, diskChartData, ramChartData, webSocketUrl])
+    }, [cpuChartData, diskChartData, ramChartData,])
 
     return (
         <div className={"row vh-100 align-items-center"}>

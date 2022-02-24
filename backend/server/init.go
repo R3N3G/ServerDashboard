@@ -20,7 +20,7 @@ type Webpage struct {
 func (wp *Webpage) setMiddlewares() {
 	wp.Router.Use(gin.Recovery())
 	wp.Router.Use(cors.New(cors.Config{
-		AllowOrigins: []string{"http://localhost:3000"},
+		AllowOrigins: []string{"*"},
 	}))
 	wp.Router.SetTrustedProxies(nil)
 }
