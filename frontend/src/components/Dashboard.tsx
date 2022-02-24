@@ -85,7 +85,7 @@ const Dashboard = () => {
 
     return (
         <div className={"row vh-100 align-items-center"}>
-            <div className={"row g-3 m-0"}>
+            <div className={"row g-0 m-0 pb-3"}>
                 <Card element={
                     <SystemExtras
                         staticInformation={staticSystem}
