@@ -6,7 +6,7 @@ import Uptime from "./Uptime";
 
 const OverviewCard: FC<Props> = ({staticInformation, basicInformation, extraInformation}) => {
     return (
-        <div className="text-nowrap h-100 d-flex flex-column justify-content-between">
+        <div className="h-100 d-flex flex-column justify-content-between">
             <DarkModeSwitch/>
             <LiveCardHeader
                 staticInfo={{name: staticInformation.host.server_name, info: staticInformation.processor.architecture}}

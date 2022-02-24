@@ -4,20 +4,25 @@ import {BasicSystemInformation, ExtraLiveInformation} from "../../types/system";
 
 const LiveCardHeader: FC<Props> = ({staticInfo, basicInformation, extraInformation}) => {
     return (
-        <div className="d-flex align-items-center p-3">
-            <span className={"me-3 text-" + extraInformation.color}>
-                <FontAwesomeIcon icon={extraInformation.icon} size="3x"/>
-            </span>
-            <div className="d-flex flex-column">
-                <div className="d-flex align-items-center">
-                    <span className="fw-bold">{staticInfo.name}</span>
-                    <span className={"ms-2 small text-" + extraInformation.color}>({staticInfo.info})</span>
+        <div className="d-flex align-items-center justify-content-between p-3">
+            <div className="d-flex align-items-center overflow-ellipsis">
+                <div className={"me-3 text-" + extraInformation.color}>
+                    <FontAwesomeIcon icon={extraInformation.icon} size="3x"/>
                 </div>
-                <span
-                    className="small">{basicInformation.value} {staticInfo.total && " / " + staticInfo.total}</span>
+                <div className="d-flex flex-column overflow-ellipsis">
+                    <div className="d-flex align-items-center">
+                        <span className="fw-bold overflow-ellipsis">{staticInfo.name}</span>
+                        <span className={"overflow-ellipsis ms-2 small text-" + extraInformation.color}>
+                        ({staticInfo.info})
+                    </span>
+                    </div>
+                    <div className="small overflow-ellipsis">
+                        {basicInformation.value} {staticInfo.total && " / " + staticInfo.total}
+                    </div>
+                </div>
             </div>
-            <div className="position-absolute top-0 end-0 p-3 sticky-top fs-2">
-                {basicInformation.percentage !== -1 && basicInformation.percentage + " %"}
+            <div className="fs-2">
+                {basicInformation.percentage !== -1 && basicInformation.percentage + "%"}
             </div>
         </div>
     );

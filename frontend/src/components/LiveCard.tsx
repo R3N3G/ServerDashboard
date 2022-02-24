@@ -5,7 +5,7 @@ import LiveCardChartJS from "./LiveCardChartJS";
 
 const LiveCard: FC<Props> = ({staticInfo, basicInformation, extraInformation}) => {
     return (
-        <div className="text-nowrap h-100 d-flex flex-column justify-content-between">
+        <div className="h-100 d-flex flex-column justify-content-between">
             <LiveCardHeader staticInfo={staticInfo} extraInformation={extraInformation}
                             basicInformation={basicInformation}/>
             <LiveCardChartJS extraInformation={extraInformation}/>

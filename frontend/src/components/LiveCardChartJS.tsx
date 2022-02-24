@@ -27,6 +27,7 @@ const LiveCardChartJS: FC<Props> = ({extraInformation}) => {
     const options = {
         responsive: true,
         maintainAspectRatio: false,
+        events: [],
         plugins: {
             legend: {
                 display: false,
