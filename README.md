@@ -2,11 +2,11 @@
 
 ## Dark Mode
 
-![screenshot](images/screenshot_dark.png)
+![screenshot](https://www.unjx.de/static/screenshot_dark.png)
 
 ## Light Mode
 
-![screenshot](images/screenshot_light.png)
+![screenshot](https://www.unjx.de/static/screenshot_light.png)
 
 written in Go and React
 
