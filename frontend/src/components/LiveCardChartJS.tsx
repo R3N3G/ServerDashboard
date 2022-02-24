@@ -20,7 +20,7 @@ ChartJS.register(
     Tooltip,
 );
 
-const SystemMiddle: FC<Props> = ({extraInformation}) => {
+const LiveCardChartJS: FC<Props> = ({extraInformation}) => {
     const style = getComputedStyle(document.body);
     const color = 'rgba(' + style.getPropertyValue('--bs-' + extraInformation.color + '-rgb') + ')';
 
@@ -62,14 +62,14 @@ const SystemMiddle: FC<Props> = ({extraInformation}) => {
                 borderColor: color,
                 backgroundColor: color,
                 fill: false,
-                tension: 0.4,
+                tension: 0.1,
                 pointRadius: 1
             },
         ],
     };
 
     return (
-        <div className={"px-3"}>
+        <div className={"p-3"}>
             <Line options={options} data={data}/>
         </div>
     );
@@ -79,4 +79,4 @@ interface Props {
     extraInformation: ExtraLiveInformation;
 }
 
-export default SystemMiddle;
+export default LiveCardChartJS;

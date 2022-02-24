@@ -5,8 +5,15 @@ type BasicSystemInformation struct {
 	Percentage float64 `json:"percentage"`
 }
 
+type Uptime struct {
+	Days    uint64 `json:"days"`
+	Hours   string `json:"hours"`
+	Minutes string `json:"minutes"`
+	Seconds string `json:"seconds"`
+}
+
 type BasicHostInformation struct {
-	Uptime string `json:"uptime"`
+	Uptime Uptime `json:"uptime"`
 }
 
 type LiveInformation struct {
@@ -28,8 +35,8 @@ type Host struct {
 	OperatingSystem string `json:"operating_system"`
 	Platform        string `json:"platform"`
 	PlatformVersion string `json:"platform_version"`
-	Processes       uint64 `json:"processes"`
 	Partitions      int    `json:"partitions"`
+	TotalSwap       string `json:"total_swap"`
 }
 
 type Storage struct {

@@ -1,12 +1,19 @@
 import {IconDefinition} from "@fortawesome/fontawesome-svg-core";
 
-export interface BasicSystemInformation {
-    value: string,
-    percentage: number,
+export interface Uptime {
+    days: number,
+    hours: string,
+    minutes: string,
+    seconds: string,
 }
 
 export interface BasicHostInformation {
-    uptime: string,
+    uptime: Uptime,
+}
+
+export interface BasicSystemInformation {
+    value: string,
+    percentage: number,
 }
 
 export interface LiveInformation {
@@ -28,7 +35,7 @@ export interface host {
     operating_system: string,
     platform: string,
     platform_version: string,
-    processes: number,
+    total_swap: string,
     partitions: number,
 }
 

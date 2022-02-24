@@ -2,12 +2,12 @@ import {useEffect, useState} from "react";
 import {MoonFill, SunFill} from "react-bootstrap-icons";
 import ReactTooltip from "react-tooltip";
 
-const DarkMode = () => {
+const DarkModeSwitch = () => {
     const [isDark, setIsDark] = useState<boolean>(false);
 
     const changeToggle = (state: boolean) => {
         setIsDark(state);
-    }
+    };
 
     useEffect(() => {
         if (isDark) {
@@ -15,20 +15,20 @@ const DarkMode = () => {
         } else {
             document.body.classList.remove('dark');
         }
-    }, [isDark])
+    }, [isDark]);
 
     useEffect(() => {
         if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
             setIsDark(true)
         }
-    }, [])
+    }, []);
 
     return (
-        <div className={"position-absolute top-0 end-0 p-3 sticky-top"}>
+        <div className={"position-absolute top-0 end-0 py-3 px-1 sticky-top"}>
             <div className="form-check form-switch d-flex align-items-center">
                 <label className="form-check-label btn text-dark" htmlFor="dark_mode_toggle"
                        data-tip="" data-for="darkModeTip">
-                    {isDark ? <MoonFill size={20}/> : <SunFill size={20}/>}
+                    {isDark ? <MoonFill size={25}/> : <SunFill size={25}/>}
                 </label>
                 <input hidden id="dark_mode_toggle" className="form-check-input ms-2" type="checkbox"
                        onChange={e => changeToggle(e.target.checked)} checked={isDark}>
@@ -40,4 +40,4 @@ const DarkMode = () => {
         </div>
     );
 }
-export default DarkMode;
+export default DarkModeSwitch;
