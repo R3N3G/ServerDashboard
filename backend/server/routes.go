@@ -11,8 +11,8 @@ func (wp *Webpage) defineRoutes() {
 	wp.Router.GET("/", wp.routeHome)
 	routeSystem := wp.Router.Group("/system")
 	{
-		routeSystem.GET("/static/", wp.routeStaticSystem)
-		routeSystem.GET("/ws/", wp.routeLiveSystem)
+		routeSystem.GET("/static", wp.routeStaticSystem)
+		routeSystem.GET("/ws", wp.routeLiveSystem)
 	}
 	wp.Router.NoRoute(wp.noRoute)
 }
