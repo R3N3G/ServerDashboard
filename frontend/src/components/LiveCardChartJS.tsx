@@ -61,10 +61,9 @@ const LiveCardChartJS: FC<Props> = ({extraInformation}) => {
             {
                 data: extraInformation.chartData,
                 borderColor: color,
-                backgroundColor: color,
                 fill: false,
-                tension: 0.1,
-                pointRadius: 1
+                tension: 0.2,
+                pointRadius: 0,
             },
         ],
     };
