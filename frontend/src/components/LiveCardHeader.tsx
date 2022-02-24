@@ -1,6 +1,7 @@
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {FC} from "react";
+import React, {FC} from "react";
 import {BasicSystemInformation, ExtraLiveInformation} from "../../types/system";
+import DarkModeSwitch from "./DarkModeSwitch";
 
 const LiveCardHeader: FC<Props> = ({staticInfo, basicInformation, extraInformation}) => {
     return (
@@ -22,7 +23,7 @@ const LiveCardHeader: FC<Props> = ({staticInfo, basicInformation, extraInformati
                 </div>
             </div>
             <div className="fs-2">
-                {basicInformation.percentage !== -1 && basicInformation.percentage + "%"}
+                {basicInformation.percentage !== -1 ? basicInformation.percentage + "%" : <DarkModeSwitch/>}
             </div>
         </div>
     );

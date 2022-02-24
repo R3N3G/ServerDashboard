@@ -5,15 +5,15 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 const Uptime: FC<Props> = ({extraInformation, basicInformation}) => {
     return (
-        <div className="p-3 d-flex align-items-center justify-content-start">
-            <span className={"me-3 text-" + extraInformation.color}>
+        <div className="p-3 d-flex flex-column justify-content-start">
+            <div className={"d-flex align-items-center overflow-ellipsis mb-2 text-" + extraInformation.color}>
                 <FontAwesomeIcon icon={faPowerOff} size="1x"/>
-            </span>
-            <div className="d-flex align-items-center">
-                <pre className="mb-0 me-4">{basicInformation.uptime.days} Days</pre>
-                <pre className="mb-0 me-2">{basicInformation.uptime.hours} Hours</pre>
-                <pre className="mb-0 me-2">{basicInformation.uptime.minutes} Minutes</pre>
-                <pre className="mb-0">{basicInformation.uptime.seconds} Seconds</pre>
+                <div className="mb-0 ms-2">{basicInformation.uptime.days} Days</div>
+            </div>
+            <div className="d-flex align-items-center overflow-ellipsis">
+                <pre className="mb-0 overflow-ellipsis">
+                    {basicInformation.uptime.hours} hours {basicInformation.uptime.minutes} minutes {basicInformation.uptime.seconds} seconds
+                </pre>
             </div>
         </div>
     );

@@ -24,19 +24,17 @@ const DarkModeSwitch = () => {
     }, []);
 
     return (
-        <div className={"position-absolute top-0 end-0 py-3 px-1 sticky-top"}>
-            <div className="form-check form-switch d-flex align-items-center">
-                <label className="form-check-label btn text-dark" htmlFor="dark_mode_toggle"
-                       data-tip="" data-for="darkModeTip">
-                    {isDark ? <MoonFill size={25}/> : <SunFill size={25}/>}
-                </label>
-                <input hidden id="dark_mode_toggle" className="form-check-input ms-2" type="checkbox"
-                       onChange={e => changeToggle(e.target.checked)} checked={isDark}>
-                </input>
-                <ReactTooltip id="darkModeTip" place="top" effect="solid">
-                    {isDark ? "Dark" : "Light"}
-                </ReactTooltip>
-            </div>
+        <div className="form-check form-switch ps-0 d-flex align-items-center">
+            <label className="form-check-label btn pe-0 text-dark" htmlFor="dark_mode_toggle"
+                   data-tip="" data-for="darkModeTip">
+                {isDark ? <MoonFill size={25}/> : <SunFill size={25}/>}
+            </label>
+            <input hidden id="dark_mode_toggle" className="form-check-input ms-2" type="checkbox"
+                   onChange={e => changeToggle(e.target.checked)} checked={isDark}>
+            </input>
+            <ReactTooltip id="darkModeTip" place="top" effect="solid">
+                {isDark ? "Dark" : "Light"}
+            </ReactTooltip>
         </div>
     );
 }
