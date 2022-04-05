@@ -10,7 +10,7 @@
 
 written in Go and React
 
-[https://hub.docker.com/repository/docker/florianhoss/serverdashboard](https://hub.docker.com/repository/docker/florianhoss/serverdashboard)
+[https://hub.docker.com/r/florianhoss/serverdashboard](https://hub.docker.com/r/florianhoss/serverdashboard)
 
 ## docker-compose example:
 
